@@ -3,83 +3,83 @@ require 'rails_helper'
 RSpec.describe 'step3', type: :system do
 
   date_list = ["2025/10/01", "2025/12/01", "2025/01/01", "2025/05/01", "2025/03/01", "2025/11/01", "2025/02/01", "2025/09/01", "2025/04/01", "2025/01/01"]
-  priority_list = [2, 0, 2, 1, 1, 0, 1, 2, 1, 2]
+  priority_list = [2, 0, 2, 1, 1, 1, 0, 1, 1, 2, 1, 2]
   status_list = [0, 2, 2, 0, 1, 1, 0, 2, 1, 2]
   10.times { |n| let!(:"task_#{n+2}") { Task.create(created_at: Date.today+n, title: "task_title_#{n+2}", content: "task_content_#{n+2}", deadline_on: date_list[n], priority: priority_list[n], status: status_list[n]) } }
 
-  describe '基本要件' do
-    describe '1.終了期限の入力フォームはdate_fieldを使って実装すること' do
-      it '登録画面' do
+  describe 'Basic requirements' do
+    describe '1. The deadline input form should be implemented using date_field' do
+      it 'Registration screen' do
         visit new_task_path
         expect(find('input[type="date"]')).to be_visible
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
         expect(find('input[type="date"]')).to be_visible
       end
     end
-    describe '2. 優先度の入力フォームにはselectを使用し、「高」、「中」、「低」から選択できるようにすること' do
-      it '登録画面' do
+    describe "2. use select for the priority input form and allow the user to select from 'high', 'medium', and 'low'" do
+      it 'registration screen' do
         visit new_task_path
         expect(find('select[name="task[priority]"]')).to be_visible
-        select '高', from: 'task[priority]'
-        select '中', from: 'task[priority]'
-        select '低', from: 'task[priority]'
+        select 'high', from: 'task[priority]'
+        select 'medium', from: 'task[priority]'
+        select 'low', from: 'task[priority]'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
         expect(find('select[name="task[priority]"]')).to be_visible
-        select '高', from: 'task[priority]'
-        select '中', from: 'task[priority]'
-        select '低', from: 'task[priority]'
+        select 'high', from: 'task[priority]'
+        select 'medium', from: 'task[priority]'
+        select 'low', from: 'task[priority]'
       end
     end
-    describe '3.ステータスの入力フォームには`select`を使用し、「未着手」、「着手中」、「完了」から選択できるようにすること' do
-      it '登録画面' do
+    describe "3. Use `select` for the status entry form, and allow users to select from 'not started', 'in progress', and 'completed'" do
+      it 'registration screen' do
         visit new_task_path
         expect(find('select[name="task[priority]"]')).to be_visible
-        select '高', from: 'task[priority]'
-        select '中', from: 'task[priority]'
-        select '低', from: 'task[priority]'
+        select 'high', from: 'task[priority]'
+        select 'medium', from: 'task[priority]'
+        select 'low', from: 'task[priority]'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
         expect(find('select[name="task[priority]"]')).to be_visible
-        select '高', from: 'task[priority]'
-        select '中', from: 'task[priority]'
-        select '低', from: 'task[priority]'
+        select 'high', from: 'task[priority]'
+        select 'medium', from: 'task[priority]'
+        select 'low', from: 'task[priority]'
       end
     end
-    describe '4.タスク登録画面の優先度とステータスの入力フォームのデフォルト値は空欄にすること' do
-      it '優先度の入力フォームのデフォルト値が空欄であること' do
+    describe '4. The default values for the priority and status entry forms in the task registration screen should be blank' do
+      it 'The default value of the priority input form should be blank' do
         visit new_task_path
         expect(find('select[name="task[priority]"]').all('option')[0].text).to be_blank
       end
-      it 'ステータスの入力フォームのデフォルト値が空欄であること' do
+      it 'The default value of the status entry form must be blank' do
         visit new_task_path
         expect(find('select[name="task[status]"]').all('option')[0].text).to be_blank
       end
     end
-    describe '5.検索機能の実装にはform_withを使用し、かつscope: :searchを設定すること' do
-      it 'formタグが存在すること' do
+    describe '5. Use form_with to implement the search function and set scope: :search' do
+      it 'form tag must be present' do
         visit tasks_path
         expect(find('form')).to be_visible
       end
-      it 'ステータス検索フォームのname属性がsearch[status]になっていること' do
+      it 'The name attribute of the status search form must be set to search[status]' do
         visit tasks_path
         expect(find('select[name="search[status]"]')).to be_visible
       end
     end
-    describe '6.ステータスの検索フォームにはselectを使用し、「未着手」、「着手中」、「完了」から選択できるようにすること' do
-      it 'セレクトボックスから「未着手」、「着手中」、「完了」を選択できること' do
+    describe '6. The status search form should use select and allow the user to select from "Not Started", "Started", and "Completed"' do
+      it "should be able to select 'Not Started', 'In Process', or 'Completed' from the select box" do
         visit tasks_path
-        select '未着手', from: 'search[status]'
-        select '着手中', from: 'search[status]'
-        select '完了', from: 'search[status]'
+        select 'Not Started', from: 'search[status]'
+        select 'in progress', from: 'search[status]'
+        select 'Completed', from: 'search[status]'
       end
     end
-    describe '7.ステータスの検索フォームのデフォルト値は空欄にすること' do
-      it 'ステータスの検索フォームのデフォルト値は空欄にすること' do
+    describe '7. The default value of the search form for status should be blank' do
+      it 'The default value for the status search form should be blank' do
         visit tasks_path
         expect(find('select')).to be_visible
         expect(all('option')[0].text).to be_blank
@@ -87,209 +87,209 @@ RSpec.describe 'step3', type: :system do
     end
   end
 
-  describe '画面設計要件' do
-    describe '8.検索を実行するボタンに「検索」という文字を表示させ、`search_task`というHTMLのid属性を付与すること' do
-      it '検索を実行するボタンに「検索」という文字を表示させ、`search_task`というHTMLのid属性を付与すること' do
+  describe 'Screen design requirements' do
+    describe '8. The button to perform a search shall display the word "search" and have an HTML id attribute called `search_task`' do
+      it 'To display the word "search" on the button to perform a search and to give it an HTML id attribute of `search_task`' do
         visit tasks_path
-        expect(page).to have_button '検索'
+        expect(page).to have_button 'search'
         expect(page).to have_css '#search_task'
       end
     end
-    describe '9.一覧画面のテーブルヘッダーに「終了期限」、「優先度」、「ステータス」という文字で項目を追加すること' do
-      it '一覧画面' do
+    describe '9. Adding an item to the table header of the list screen with the words "End Due", "Priority", and "Status"' do
+      it 'list screen' do
         visit tasks_path
-        expect(find("thead")).to have_content '終了期限'
-        expect(find("thead")).to have_content '優先度'
-        expect(find("thead")).to have_content 'ステータス'
+        expect(find("thead")).to have_content 'End due'
+        expect(find("thead")).to have_content 'priority'
+        expect(find("thead")).to have_content 'status'
       end
     end
-    describe '10.タスク詳細画面に「終了期限」、「優先度」、「ステータス」の項目を追加すること' do
-      it '一覧画面' do
+    describe '10. Adding "Due Date", "Priority", and "Status" items to the task detail screen' do
+      it 'List screen' do
         visit task_path(task_2)
-        expect(page).to have_content '終了期限'
-        expect(page).to have_content '優先度'
-        expect(page).to have_content 'ステータス'
+        expect(page).to have_content 'End due'
+        expect(page).to have_content 'Priority'
+        expect(page).to have_content 'status'
       end
     end
-    describe '11.タスクの優先度は「高」、「中」、「低」で表示すること' do
-      it '一覧画面' do
+    describe '11. Task priority should be displayed as "high", "medium", and "low"' do
+      it 'list screen' do
         visit tasks_path
-        expect(page).to have_content '高'
-        expect(page).to have_content '中'
-        expect(page).to have_content '低'
+        expect(page).to have_content 'high'
+        expect(page).to have_content 'medium'
+        expect(page).to have_content 'low'
       end
-      it '詳細画面' do
+      it 'detail screen' do
         visit task_path(task_7)
-        expect(page).to have_content '低'
+        expect(page).to have_content 'Low'
         visit task_path(task_8)
-        expect(page).to have_content '中'
+        expect(page).to have_content 'medium'
         visit task_path(task_9)
-        expect(page).to have_content '高'
+        expect(page).to have_content 'high'
       end
     end
-    describe '12.タスクのステータスは「未着手」、「着手中」、「完了」で表示すること' do
-      it '一覧画面' do
+    describe '12. Task status should be displayed as "Not Started", "In Process", or "Completed"' do
+      it 'List screen' do
         visit tasks_path
-        expect(page).to have_content '未着手'
-        expect(page).to have_content '着手中'
-        expect(page).to have_content '完了'
+        expect(page).to have_content 'Not Started'
+        expect(page).to have_content 'Work in progress'
+        expect(page).to have_content 'Completed'
       end
-      it '詳細画面' do
+      it 'detail screen' do
         visit task_path(task_8)
-        expect(page).to have_content '未着手'
+        expect(page).to have_content 'Not started'
         visit task_path(task_10)
-        expect(page).to have_content '着手中'
+        expect(page).to have_content 'Work in progress'
         visit task_path(task_11)
-        expect(page).to have_content '完了'
+        expect(page).to have_content 'Completed'
       end
     end
-    describe '13.終了期限を登録するフォームラベルに「終了期限」の文字を表示させること' do
-      it '登録画面' do
+    describe '13. To display the words "End Due" on the form label to register the end due date' do
+      it 'registration screen' do
         visit new_task_path
-        expect(page).to have_selector 'label', text: '終了期限'
+        expect(page).to have_selector 'label', text: 'End due'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
-        expect(page).to have_selector 'label', text: '終了期限'
+        expect(page).to have_selector 'label', text: 'End due'
       end
     end
-    describe '14.優先度を登録するフォームラベルに「優先度」の文字を表示させること' do
-      it '登録画面' do
+    describe "14. To display the word 'priority' on the form label to register priority" do
+      it 'registration screen' do
         visit new_task_path
-        expect(page).to have_selector 'label', text: '優先度'
+        expect(page).to have_selector 'label', text: 'priority'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
-        expect(page).to have_selector 'label', text: '優先度'
+        expect(page).to have_selector 'label', text: 'priority'
       end
     end
-    describe '15.ステータスを登録するフォームラベルに「ステータス」の文字を表示させること' do
-      it '登録画面' do
+    describe "15. To display the word 'status' in the form label to register status" do
+      it 'registration screen' do
         visit new_task_path
-        expect(page).to have_selector 'label', text: 'ステータス'
+        expect(page).to have_selector 'label', text: 'status'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
-        expect(page).to have_selector 'label', text: 'ステータス'
+        expect(page).to have_selector 'label', text: 'status'
       end
     end
-    describe '16.ステータス検索のフォームラベルに「ステータス」の文字を表示させること' do
-      it 'ステータス検索のフォームラベルに「ステータス」の文字を表示させること' do
+    describe "16. To display the word 'status' in the form label of status search" do
+      it "To display the word 'status' in the form label of status search" do
         visit tasks_path
-        expect(page).to have_selector 'label', text: 'タイトル'
+        expect(page).to have_selector 'label', text: 'title'
       end
     end
-    describe '17.あいまい検索のフォームラベルに「タイトル」の文字を表示させること' do
-      it 'あいまい検索のフォームラベルに「タイトル」の文字を表示させること' do
+    describe "17. display the text 'title' in the form label of fuzzy search" do
+      it "To display the text 'title' in the form label of fuzzy search" do
         visit tasks_path
-        expect(page).to have_selector 'label', text: 'ステータス'
+        expect(page).to have_selector 'label', text: 'status'
       end
     end
   end
 
-  describe '機能要件' do
-    describe '18.タスクを登録、編集する際、終了期限、優先度、ステータスを登録できるようにすること' do
-      context '登録画面' do
-        it '終了期限、優先度「高」、ステータス「未着手」を登録できる' do
+  describe 'Functional requirements' do
+    describe '18. To be able to register the due date, priority, and status when registering or editing a task' do
+      context 'Registration screen' do
+        it "Can register the due date, priority 'high', and status 'not started'" do
           visit new_task_path
           find('input[name="task[title]"]').set('task_title')
           find('textarea[name="task[content]"]').set('task_content')
           find('input[name="task[deadline_on]"]').set(Date.today)
-          select '高', from: 'task[priority]'
-          select '未着手', from: 'task[status]'
-          click_button '登録する'
+          select 'high', from: 'task[priority]'
+          select 'not started', from: 'task[status]'
+          click_button 'register'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '高'
-          expect(page).to have_content '未着手'
+          expect(page).to have_content 'high'
+          expect(page).to have_content 'not started'
         end
-        it '終了期限、優先度「中」、ステータス「着手中」を登録できる' do
+        it "can register an end due date, priority 'medium', and status 'in progress'" do
           visit new_task_path
           find('input[name="task[title]"]').set('task_title')
           find('textarea[name="task[content]"]').set('task_content')
           find('input[name="task[deadline_on]"]').set(Date.today.next_day)
-          select '中', from: 'task[priority]'
-          select '着手中', from: 'task[status]'
-          click_button '登録する'
+          select 'in', from: 'task[priority]'
+          select 'in progress', from: 'task[status]'
+          click_button 'register'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '中'
-          expect(page).to have_content '着手中'
+          expect(page).to have_content 'middle'
+          expect(page).to have_content 'in progress'
         end
-        it '終了期限、優先度「低」、ステータス「完了」を登録できる' do
+        it "can register an end due date, priority 'low' and status 'complete'" do
           visit new_task_path
           find('input[name="task[title]"]').set('task_title')
           find('textarea[name="task[content]"]').set('task_content')
           find('input[name="task[deadline_on]"]').set(Date.today.next_month)
-          select '高', from: 'task[priority]'
-          select '未着手', from: 'task[status]'
-          click_button '登録する'
+          select 'high', from: 'task[priority]'
+          select 'not started', from: 'task[status]'
+          click_button 'register'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '高'
-          expect(page).to have_content '未着手'
+          expect(page).to have_content 'high'
+          expect(page).to have_content 'not started'
         end
       end
-      context '編集画面' do
-        it '異なる終了期限、優先度「高」、ステータス「未着手」に更新できる' do
+      context 'edit screen' do
+        it "can be updated to a different due date, priority 'high', status 'not started'" do
           visit edit_task_path(task_2)
-          find('input[name="task[deadline_on]"]').set(Date.today.next_day)
-          select '高', from: 'task[priority]'
-          select '未着手', from: 'task[status]'
-          click_button '更新する'
+          find('input[name="task[deadline_on]"]]').set(Date.today.next_day)
+          select 'high', from: 'task[priority]'
+          select 'not started', from: 'task[status]'
+          click_button 'update'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '高'
-          expect(page).to have_content '未着手'
+          expect(page).to have_content 'high'
+          expect(page).to have_content 'not started'
         end
-        it '異なる終了期限、優先度「中」、ステータス「着手中」に更新できる' do
+        it "can be updated to a different end due date, priority 'medium', status 'in progress'" do
           visit edit_task_path(task_2)
-          find('input[name="task[deadline_on]"]').set(Date.today.next_month)
-          select '中', from: 'task[priority]'
-          select '着手中', from: 'task[status]'
-          click_button '更新する'
+          find('input[name="task[deadline_on]"]]').set(Date.today.next_month)
+          select 'in', from: 'task[priority]'
+          select 'in progress', from: 'task[status]'
+          click_button 'update'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '中'
-          expect(page).to have_content '着手中'
+          expect(page).to have_content 'middle'
+          expect(page).to have_content 'in progress'
         end
-        it '異なる終了期限、優先度「低」、ステータス「完了」に更新できる' do
+        it "can be updated to a different finish deadline, priority 'low', status 'complete'" do
           visit edit_task_path(task_2)
-          find('input[name="task[deadline_on]"]').set(Date.today.next_year)
-          select '高', from: 'task[priority]'
-          select '未着手', from: 'task[status]'
-          click_button '更新する'
+          find('input[name="task[deadline_on]"]]').set(Date.today.next_year)
+          select 'high', from: 'task[priority]'
+          select 'not started', from: 'task[status]'
+          click_button 'update'
           expect(page).to have_content 'task_title'
           expect(page).to have_content 'task_content'
-          expect(page).to have_content '高'
-          expect(page).to have_content '未着手'
+          expect(page).to have_content 'high'
+          expect(page).to have_content 'not started'
         end
       end
     end
-    describe '19.タスクの登録、編集において、要件通りにバリデーションを追加すること' do
-      it '登録画面' do
+    describe '19. Adding validation as per requirement in task registration and editing' do
+      it 'registration screen' do
         visit new_task_path
         find('input[name="task[title]"]').set('task_title')
         find('textarea[name="task[content]"]').set('task_content')
         find('input[name="task[deadline_on]"]').set('')
         select '', from: 'task[priority]'
         select '', from: 'task[status]'
-        click_button '登録する'
-        expect(page).to have_content '終了期限を入力してください'
-        expect(page).to have_content '優先度を入力してください'
-        expect(page).to have_content 'ステータスを入力してください'
+        click_button 'register'
+        expect(page).to have_content 'Please enter an end due date'
+        expect(page).to have_content 'Please enter a priority'
+        expect(page).to have_content 'Please enter a status'
       end
-      it '編集画面' do
+      it 'edit screen' do
         visit edit_task_path(task_2)
-        find('input[name="task[deadline_on]"]').set(nil)
-        click_button '更新する'
-        expect(page).to have_content '終了期限を入力してください'
+        find('input[name="task[deadline_on]"]]').set(nil)
+        click_button 'update'
+        expect(page).to have_content 'Please enter an end deadline'
       end
     end
-    describe '20.テーブルヘッダーの「終了期限」をクリックした際、タスクを終了期限の昇順にソートし、かつ終了期限が同じ場合は作成日時の降順で表示させること' do
-      it 'テーブルヘッダーの「終了期限」をクリックした際、タスクを終了期限の昇順にソートし、かつ終了期限が同じ場合は作成日時の降順で表示させること' do
+    describe "20. When clicking on 'Due Date' in the table header, the tasks should be sorted in ascending order by due date, and if they have the same due date, they should be displayed in descending order by creation date." do
+      it "When you click on 'Due Date' in the table header, sort the tasks in ascending order by due date, and if they have the same due date, display them in descending order by creation date" do
         visit tasks_path
-        click_on '終了期限'
+        click_on 'end_date'
         sleep 0.2
         tr = all('tbody tr')
         expect(tr[0].text).to have_content 'task_title_11'
@@ -304,10 +304,10 @@ RSpec.describe 'step3', type: :system do
         expect(tr[9].text).to have_content 'task_title_3'
       end
     end
-    describe '21.テーブルヘッダーの「優先度」をクリックした際、優先度の高い順にソートし、かつ優先度が同じ場合は作成日時の降順で表示させること' do
-      it 'テーブルヘッダーの「優先度」をクリックした際、優先度の高い順にソートし、かつ優先度が同じ場合は作成日時の降順で表示させること' do
+    describe '21. When clicking on "Priority" in the table header, sort in order of priority, and if the priorities are the same, display in descending order of creation date and time' do
+      it 'When clicking on "Priority" in the table header, sort in order of priority, and if the priorities are the same, display in descending order of creation date and time' do
         visit tasks_path
-        click_on '優先度'
+        click_on 'priority'
         sleep 0.2
         tr = all('tbody tr')
         expect(tr[0].text).to have_content 'task_title_11'
@@ -322,15 +322,15 @@ RSpec.describe 'step3', type: :system do
         expect(tr[9].text).to have_content 'task_title_3'
       end
     end
-    describe '22.一覧画面にステータス「未着手」、「着手中」、「完了」で検索する機能を実装すること' do
-      it '未着手で検索できる' do
+    describe "22. Implement a function to search by status 'not started', 'in progress', or 'completed' in the list screen" do
+      it 'Can search by "Not Started"' do
         visit tasks_path
-        select '未着手', from: "search[status]"
+        select 'Not Started', from: "search[status]"
         find('#search_task').click
         expect(page).to have_content 'task_title_2'
         expect(page).to have_content 'task_title_5'
         expect(page).to have_content 'task_title_8'
-        expect(page).not_to have_content 'task_title_3'
+        expect(page).not_to_have_content 'task_title_3'
         expect(page).not_to have_content 'task_title_4'
         expect(page).not_to have_content 'task_title_6'
         expect(page).not_to have_content 'task_title_7'
@@ -338,14 +338,14 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_10'
         expect(page).not_to have_content 'task_title_11'
       end
-      it '未着中で検索できる' do
+      it 'can be searched for in undelivered' do
         visit tasks_path
-        select '着手中', from: "search[status]"
+        select 'in progress', from: "search[status]"
         find('#search_task').click
         expect(page).to have_content 'task_title_6'
         expect(page).to have_content 'task_title_7'
         expect(page).to have_content 'task_title_10'
-        expect(page).not_to have_content 'task_title_2'
+        expect(page).not_to_have_content 'task_title_2'
         expect(page).not_to have_content 'task_title_3'
         expect(page).not_to have_content 'task_title_4'
         expect(page).not_to have_content 'task_title_5'
@@ -353,15 +353,15 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_9'
         expect(page).not_to have_content 'task_title_11'
       end
-      it '完了で検索できる' do
+      it 'can be searched by completion' do
         visit tasks_path
-        select '完了', from: "search[status]"
+        select 'completion', from: "search[status]"
         find('#search_task').click
         expect(page).to have_content 'task_title_3'
         expect(page).to have_content 'task_title_4'
         expect(page).to have_content 'task_title_9'
         expect(page).to have_content 'task_title_11'
-        expect(page).not_to have_content 'task_title_2'
+        expect(page).not_to_have_content 'task_title_2'
         expect(page).not_to have_content 'task_title_5'
         expect(page).not_to have_content 'task_title_6'
         expect(page).not_to have_content 'task_title_7'
@@ -369,14 +369,14 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_10'
       end
     end
-    describe '23.一覧画面にタイトルであいまい検索する機能を実装すること' do
-      it '一覧画面にタイトルであいまい検索する機能を実装すること' do
+    describe '23. Implement a fuzzy search function by title in the list screen' do
+      it 'Implement fuzzy search function by title in the list screen' do
         visit tasks_path
         find('input[name="search[title]"]').set('task_title_1')
         find('#search_task').click
         expect(page).to have_content 'task_title_10'
         expect(page).to have_content 'task_title_11'
-        expect(page).not_to have_content 'task_title_2'
+        expect(page).not_to_have_content 'task_title_2'
         expect(page).not_to have_content 'task_title_3'
         expect(page).not_to have_content 'task_title_4'
         expect(page).not_to have_content 'task_title_5'
@@ -386,14 +386,14 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_9'
       end
     end
-    describe '24.検索機能はタイトルとステータスの両方で絞り込み検索ができるようにすること' do
-      it '検索機能はタイトルとステータスの両方で絞り込み検索ができるようにすること' do
+    describe '24. The search function should be able to refine the search by both title and status' do
+      it 'The search function should be able to refine the search by both title and status' do
         visit tasks_path
-        select '着手中', from: "search[status]"
+        select 'in progress', from: "search[status]"
         find('input[name="search[title]"]').set('task_title_1')
         find('#search_task').click
         expect(page).to have_content 'task_title_10'
-        expect(page).not_to have_content 'task_title_2'
+        expect(page).not_to_have_content 'task_title_2'
         expect(page).not_to have_content 'task_title_3'
         expect(page).not_to have_content 'task_title_4'
         expect(page).not_to have_content 'task_title_5'
