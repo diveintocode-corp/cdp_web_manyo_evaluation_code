@@ -5,7 +5,7 @@ class MyFormatter
   end
 
   def start(notification)
-    @output << "---\ntitle: 課題評価のフィードバック\n---\n"
+    @output << "---\ntitle: Feedback on the assignment evaluation\n---\n"
   end
 
   def example_passed(notification)
