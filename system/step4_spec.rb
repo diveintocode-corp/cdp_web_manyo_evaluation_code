@@ -5,15 +5,15 @@ RSpec.describe 'step4', type: :system do
   let!(:user) { User.create(name: 'user_name', email: 'user@email.com', password: 'password') }
   let!(:admin) { User.create(name: 'admin_name', email: 'admin@email.com', password: 'password', admin: true) }
 
-  describe '画面遷移要件' do
-    describe '1.要件通りにパスのプレフィックスが使用できること' do
-      context 'ログアウト中の場合' do
-        it '要件通りにパスのプレフィックスが使用できること' do
+  describe 'Screen transition requirements' do
+    describe '1. path prefix can be used as per requirement' do
+      context 'If you are logged out' do
+        it 'Path prefix can be used as per requirement' do
           visit new_session_path
           visit new_user_path
         end
       end
-      context '一般ユーザでログイン中の場合' do
+      context 'If you are logged in as a regular user' do
         before do
           visit root_path
           find('#sign-in').click
@@ -21,12 +21,12 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(user.password)
           find('#create-session').click
         end
-        it '要件通りにパスのプレフィックスが使用できること' do
+        it 'The path prefix can be used as per requirement' do
           visit user_path(user)
           visit edit_user_path(user)
         end
       end
-      context '管理者でログイン中の場合' do
+      context 'If you are logged in as administrator' do
         before do
           visit root_path
           find('#sign-in').click
@@ -34,7 +34,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           find('#create-session').click
         end
-        it '要件通りにパスのプレフィックスが使用できること' do
+        it 'The path prefix can be used as per requirement' do
           visit admin_users_path
           visit new_admin_user_path
           visit admin_user_path(user)
@@ -44,10 +44,10 @@ RSpec.describe 'step4', type: :system do
     end
   end
 
-  describe '画面設計要件' do
-    describe '2.要件通りにHTMLのid属性やclass属性が付与されていること' do
-      context 'ログアウト中の場合' do
-        it 'グローバルナビゲーション' do
+  describe 'Screen design requirements' do
+    describe '2. HTML id and class attributes must be assigned as per requirements' do
+      context 'When you are logged out' do
+        it 'Global navigation' do
           visit root_path
           expect(page).to have_css '#sign-up'
           expect(page).to have_css '#sign-in'
@@ -56,18 +56,18 @@ RSpec.describe 'step4', type: :system do
           expect(page).not_to have_css '#users-index'
           expect(page).not_to have_css '#new-user'
         end
-        it 'ログイン画面' do
+        it 'login screen' do
           visit root_path
           find('#sign-in').click
           expect(page).to have_css '#create-session'
         end
-        it 'アカウント登録画面' do
+        it 'account registration screen' do
           visit root_path
           find('#sign-up').click
           expect(page).to have_css '#create-user'
         end
       end
-      context '一般ユーザでログイン中の場合' do
+      context 'If you are logged in as a regular user' do
         before do
           visit root_path
           find('#sign-in').click
@@ -75,7 +75,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(user.password)
           find('#create-session').click
         end
-        it 'グローバルナビゲーション' do
+        it 'global navigation' do
           expect(page).to have_css '#my-account'
           expect(page).to have_css '#sign-out'
           expect(page).not_to have_css '#users-index'
@@ -83,18 +83,18 @@ RSpec.describe 'step4', type: :system do
           expect(page).not_to have_css '#sign-up'
           expect(page).not_to have_css '#sign-in'
         end
-        it 'アカウント詳細画面' do
+        it 'Account details screen' do
           find('#my-account').click
           expect(page).to have_css '#edit-user'
         end
-        it 'アカウント編集画面' do
+        it 'Edit account screen' do
           find('#my-account').click
           find('#edit-user').click
           expect(page).to have_css '#update-user'
           expect(page).to have_css '#back'
         end
       end
-      context '管理者でログイン中の場合' do
+      context 'If you are logged in as administrator' do
         before do
           visit root_path
           find('#sign-in').click
@@ -102,7 +102,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           find('#create-session').click
         end
-        it 'グローバルナビゲーション' do
+        it 'global navigation' do
           expect(page).to have_css '#my-account'
           expect(page).to have_css '#sign-out'
           expect(page).to have_css '#users-index'
@@ -110,18 +110,18 @@ RSpec.describe 'step4', type: :system do
           expect(page).not_to have_css '#sign-up'
           expect(page).not_to have_css '#sign-in'
         end
-        it 'ユーザ一覧画面' do
+        it 'users list screen' do
           find('#users-index').click
           expect(page).to have_css '.show-user'
           expect(page).to have_css '.edit-user'
           expect(page).to have_css '.destroy-user'
         end
-        it 'ユーザ登録画面（管理者用）' do
+        it 'User registration screen (for administrators)' do
           find('#users-index').click
           find("#new-user").click
           expect(page).to have_css '#create-user'
         end
-        it 'ユーザ編集画面（管理者用）' do
+        it 'User edit screen (for admin)' do
           find('#users-index').click
           all(".edit-user")[0].click
           expect(page).to have_css '#update-user'
@@ -131,139 +131,139 @@ RSpec.describe 'step4', type: :system do
     end
   end
 
-  describe '画面設計要件' do
-    describe '3.要件通りに各画面に文字やリンク、ボタンを表示すること' do
-      context 'ログアウト中の場合' do
-        it 'グローバルナビゲーション' do
+  describe 'Screen design requirements' do
+    describe '3. Display text, links and buttons on each screen as per requirements' do
+      context 'When you are logged out' do
+        it 'Global navigation' do
           visit root_path
-          expect(page).to have_link 'アカウント登録'
-          expect(page).to have_link 'ログイン'
+          expect(page).to have_link 'Register for an account'
+          expect(page).to have_link 'Login'
         end
-        it 'ログイン画面' do
+        it 'login screen' do
           visit root_path
-          click_link 'ログイン'
-          expect(page).to have_content 'ログインページ'
-          expect(page).to have_selector 'label', text: 'メールアドレス'
-          expect(page).to have_selector 'label', text: 'パスワード'
-          expect(page).to have_button 'ログイン'
+          click_link 'login'
+          expect(page).to have_content 'login page'
+          expect(page).to have_selector 'label', text: 'email address'
+          expect(page).to have_selector 'label', text: 'Password'
+          expect(page).to have_button 'login'
         end
-        it 'アカウント登録画面' do
+        it 'account registration screen' do
           visit root_path
-          click_link 'アカウント登録'
-          expect(page).to have_content 'アカウント登録ページ'
-          expect(page).to have_selector 'label', text: '名前'
-          expect(page).to have_selector 'label', text: 'メールアドレス'
-          expect(page).to have_selector 'label', text: 'パスワード'
-          expect(page).to have_selector 'label', text: 'パスワード（確認）'
-          expect(page).to have_button '登録する'
+          click_link 'Register account'
+          expect(page).to have_content 'Account registration page'
+          expect(page).to have_selector 'label', text: 'name'
+          expect(page).to have_selector 'label', text: 'Email address'
+          expect(page).to have_selector 'label', text: 'Password'
+          expect(page).to have_selector 'label', text: 'Password (confirmation)'
+          expect(page).to have_button 'Register'
         end
       end
-      context '一般ユーザでログイン中の場合' do
+      context 'If you are logged in as a regular user' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'グローバルナビゲーション' do
-          expect(page).to have_link 'タスク一覧'
-          expect(page).to have_link 'タスクを登録する'
-          expect(page).to have_link 'アカウント'
-          expect(page).to have_link 'ログアウト'
+        it 'global navigation' do
+          expect(page).to have_link 'Task List'
+          expect(page).to have_link 'Register a task'
+          expect(page).to have_link 'Account'
+          expect(page).to have_link 'Logout'
         end
-        it 'アカウント詳細画面' do
-          click_link 'アカウント'
-          expect(page).to have_content 'アカウント詳細ページ'
-          expect(page).to have_content '名前'
-          expect(page).to have_content 'メールアドレス'
-          expect(page).to have_link '編集'
+        it 'Account details screen' do
+          click_link 'Account'
+          expect(page).to have_content 'Account details page'
+          expect(page).to have_content 'Name'
+          expect(page).to have_content 'Email address'
+          expect(page).to have_link 'Edit'
         end
-        it 'アカウント編集画面' do
-          click_link 'アカウント'
-          click_link '編集'
-          expect(page).to have_content 'アカウント編集ページ'
-          expect(page).to have_selector 'label', text: '名前'
-          expect(page).to have_selector 'label', text: 'メールアドレス'
-          expect(page).to have_selector 'label', text: 'パスワード'
-          expect(page).to have_selector 'label', text: 'パスワード（確認）'
-          expect(page).to have_button '更新する'
-          expect(page).to have_link '戻る'
+        it 'account edit screen' do
+          click_link 'Account'
+          click_link 'edit'
+          expect(page).to have_content 'Account edit page'
+          expect(page).to have_selector 'label', text: 'name'
+          expect(page).to have_selector 'label', text: 'Email address'
+          expect(page).to have_selector 'label', text: 'Password'
+          expect(page).to have_selector 'label', text: 'Password (confirmation)'
+          expect(page).to have_button 'Update'
+          expect(page).to have_link 'Back'
         end
       end
-      context '管理者ユーザでログイン中の場合' do
+      context 'If you are logged in as an admin user' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'グローバルナビゲーション' do
-          expect(page).to have_link 'ユーザ一覧'
-          expect(page).to have_link 'ユーザを登録する'
-          expect(page).to have_link 'タスク一覧'
-          expect(page).to have_link 'タスクを登録する'
-          expect(page).to have_link 'アカウント'
-          expect(page).to have_link 'ログアウト'
+        it 'global navigation' do
+          expect(page).to have_link 'User List'
+          expect(page).to have_link 'Register a user'
+          expect(page).to have_link 'List of tasks'
+          expect(page).to have_link 'Register a task'
+          expect(page).to have_link 'Account'
+          expect(page).to have_link 'Logout'
         end
-        it 'ユーザ一覧画面' do
-          click_link 'ユーザ一覧'
-          expect(page).to have_content 'ユーザ一覧ページ'
-          expect(page).to have_selector 'thead', text: '名前'
-          expect(page).to have_selector 'thead', text: 'メールアドレス'
-          expect(page).to have_selector 'thead', text: '管理者権限'
-          expect(page).to have_selector 'thead', text: 'タスク数'
-          expect(page).to have_link '詳細'
-          expect(page).to have_link '編集'
-          expect(page).to have_link '削除'
+        it 'User List Screen' do
+          click_link 'User List'
+          expect(page).to have_content 'User List Page'
+          expect(page).to have_selector 'thead', text: 'name'
+          expect(page).to have_selector 'head', text: 'email address'
+          expect(page).to have_selector 'thead', text: 'Administrator rights'
+          expect(page).to have_selector 'thead', text: 'Number of tasks'
+          expect(page).to have_link 'details'
+          expect(page).to have_link 'edit', text: 'edit'
+          expect(page).to have_link 'delete'
         end
-        it 'ユーザ登録画面' do
-          click_link 'ユーザを登録する'
-          expect(page).to have_content 'ユーザ登録ページ'
-          expect(page).to have_selector 'label', text: '名前'
-          expect(page).to have_selector 'label', text: 'メールアドレス'
-          expect(page).to have_selector 'label', text: 'パスワード'
-          expect(page).to have_selector 'label', text: 'パスワード（確認）'
-          expect(page).to have_selector 'label', text: '管理者権限'
-          expect(page).to have_button '登録する'
-          expect(page).to have_link '戻る'
+        it 'user registration screen' do
+          click_link 'Register a user'
+          expect(page).to have_content 'User registration page'
+          expect(page).to have_selector 'label', text: 'name'
+          expect(page).to have_selector 'label', text: 'Email address'
+          expect(page).to have_selector 'label', text: 'Password'
+          expect(page).to have_selector 'label', text: 'Password (confirmation)'
+          expect(page).to have_selector 'label', text: 'Administrator rights'
+          expect(page).to have_button 'Register'
+          expect(page).to have_link 'Return'
         end
-        it 'ユーザ詳細画面' do
-          click_link 'ユーザ一覧'
+        it 'user details screen' do
+          click_link 'user list'
           all(".show-user")[0].click
-          expect(page).to have_content 'ユーザ詳細ページ'
-          expect(page).to have_content '名前'
-          expect(page).to have_content 'メールアドレス'
-          expect(page).to have_content '管理者権限'
-          expect(page).to have_selector 'thead', text: 'タイトル'
-          expect(page).to have_selector 'thead', text: '内容'
-          expect(page).to have_selector 'thead', text: '作成日時'
-          expect(page).to have_selector 'thead', text: '終了期限'
-          expect(page).to have_selector 'thead', text: '優先度'
-          expect(page).to have_selector 'thead', text: 'ステータス'
+          expect(page).to have_content 'User details page'
+          expect(page).to have_content 'Name'
+          expect(page).to have_content 'Email address'
+          expect(page).to have_content 'Administrator rights'
+          expect(page).to have_selector 'thead', text: 'title'
+          expect(page).to have_selector 'thead', text: 'content'
+          expect(page).to have_selector 'head', text: 'Creation date'
+          expect(page).to have_selector 'thead', text: 'End date'
+          expect(page).to have_selector 'thead', text: 'Priority'
+          expect(page).to have_selector 'thead', text: 'status'
         end
-        it 'ユーザ編集画面' do
-          click_link 'ユーザ一覧'
+        it 'User edit screen' do
+          click_link 'user list'
           all(".edit-user")[0].click
-          expect(page).to have_content 'ユーザ編集ページ'
-          expect(page).to have_selector 'label', text: '名前'
-          expect(page).to have_selector 'label', text: 'メールアドレス'
-          expect(page).to have_selector 'label', text: 'パスワード'
-          expect(page).to have_selector 'label', text: 'パスワード（確認）'
-          expect(page).to have_selector 'label', text: '管理者権限'
-          expect(page).to have_button '更新する'
-          expect(page).to have_link '戻る'
+          expect(page).to have_content 'edit user page'
+          expect(page).to have_selector 'label', text: 'name'
+          expect(page).to have_selector 'label', text: 'email address'
+          expect(page).to have_selector 'label', text: 'Password'
+          expect(page).to have_selector 'label', text: 'Password (confirmation)'
+          expect(page).to have_selector 'label', text: 'Administrator rights'
+          expect(page).to have_button 'Update'
+          expect(page).to have_link 'Back'
         end
       end
     end
 
-    describe '4.ユーザ一覧画面には、各ユーザが作成しているタスクの数を表示させること' do
+    describe '4. The number of tasks created by each user should be displayed in the user list screen' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザ一覧画面には、各ユーザが作成しているタスクの数を表示させること' do
+      it 'The user list screen should show the number of tasks each user has created' do
         10.times do
           Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: user.id)
         end
@@ -271,565 +271,565 @@ RSpec.describe 'step4', type: :system do
           Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: admin.id)
         end
         visit root_path
-        click_link 'ユーザ一覧'
+        click_link 'user list'
         expect(page).to have_content '10'
         expect(page).to have_content '5'
       end
     end
 
-    describe '5.ユーザ一覧画面の管理者権限の項目で管理者権限がある場合は「あり」、ない場合は「なし」を表示させること' do
+    describe "5. Display 'Yes' if the user has admin rights and 'No' if the user doesn't have admin rights in the admin rights section of the user list screen" do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザが管理者のみの場合、ユーザ一覧に「あり」が表示させる' do
+      it 'If the user is only an administrator, make the user list show "Yes"' do
         User.destroy_by(name: 'user_name')
-        click_link 'ユーザ一覧'
-        expect(page).to have_content 'あり'
-        expect(page).not_to have_content 'なし'
+        click_link 'User list'
+        expect(page).to have_content 'Yes'
+        expect(page).not_to_have_content 'none'
       end
-      it '一般ユーザと管理者が存在する場合、ユーザ一覧に「あり」と「なし」が表示させる' do
-        click_link 'ユーザ一覧'
-        expect(page).to have_content 'あり'
-        expect(page).to have_content 'なし'
+      it "If there are general users and administrators, make the user list show 'yes' and 'no'" do
+        click_link 'user list'
+        expect(page).to have_content 'Yes'
+        expect(page).to have_content 'none'
       end
     end
 
-    describe '6.ユーザ詳細画面の管理者権限の項目で管理者権限がある場合は「あり」、ない場合は「なし」を表示させること' do
+    describe "6. Display 'Yes' if the user has admin rights and 'No' if the user does not have admin rights in the admin rights section of the user details screen" do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it '管理者の場合、「あり」が表示させる' do
-        click_link 'ユーザ一覧'
-        click_link '詳細', href: admin_user_path(admin)
-        expect(page).to have_content 'あり'
+      it "If you are an administrator, make sure 'Yes' is displayed" do
+        click_link 'User List'
+        click_link 'details', href: admin_user_path(admin)
+        expect(page).to have_content 'Yes'
       end
-      it '一般ユーザの場合、「あり」が表示させる' do
-        click_link 'ユーザ一覧'
-        click_link '詳細', href: admin_user_path(user)
-        expect(page).to have_content 'なし'
+      it 'For general users, "Yes" will be displayed' do
+        click_link 'User List'
+        click_link 'Details', href: admin_user_path(user)
+        expect(page).to have_content 'None'
       end
     end
 
-    describe '7.ユーザ詳細画面にそのユーザが作成したタスクのタイトル、内容、終了期限、優先度、ステータスを一覧で表示させること' do
+    describe '7. To list the title, content, due date, priority, and status of tasks created by the user in the user detail screen' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it '登録したタスク情報が一覧で表示させること' do
+      it 'To display the registered task information in a list' do
         10.times do |n|
           Task.create(title: "task_title_#{n}", content: "task_content_#{n}", deadline_on: Date.today, priority: n%3, status: n%3, user_id: user.id)
         end
-        click_link 'ユーザ一覧'
-        click_link '詳細', href: admin_user_path(user)
+        click_link 'User List'
+        click_link 'Details', href: admin_user_path(user)
         10.times do |n|
           expect(page).to have_content "task_title_#{n}"
         end
-        10.times do |n|
+        10.times do |n| expect(page).to have_content "task_title_#{n}"
           expect(page).to have_content "task_content_#{n}"
         end
-        expect(page).to have_content '高'
-        expect(page).to have_content '中'
-        expect(page).to have_content '低'
-        expect(page).to have_content '未着手'
-        expect(page).to have_content '着手中'
-        expect(page).to have_content '完了'
+        expect(page).to have_content 'high'
+        expect(page).to have_content 'medium'
+        expect(page).to have_content 'low'
+        expect(page).to have_content 'Not started'
+        expect(page).to have_content 'Work in progress'
+        expect(page).to have_content 'Completed'
       end
     end
   end
 
-  describe '8.画面遷移要件' do
-    describe '画面遷移図通りに遷移させること' do
-      context 'ログアウト中の場合' do
-        it 'グローバルナビゲーションのリンクを要件通りに遷移させること' do
+  describe '8. screen transition requirements' do
+    describe 'Make the transition as per the screen transition diagram' do
+      context 'In case of logout' do
+        it 'Make global navigation links transition as per requirements' do
           visit root_path
-          click_link 'ログイン'
-          expect(page).to have_content 'ログインページ'
-          click_link 'アカウント登録'
-          expect(page).to have_content 'アカウント登録ページ'
+          click_link 'login'
+          expect(page).to have_content 'Login page'
+          click_link 'Register account'
+          expect(page).to have_content 'Account registration page'
         end
-        it 'アカウント登録に成功した場合、ページタイトルに「タスク一覧ページ」が表示される' do
+        it 'If the account registration is successful, "Task List Page" will be displayed in the page title' do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '登録する'
-          expect(page).to have_content 'タスク一覧ページ'
+          click_button 'Register'
+          expect(page).to have_content 'Task List Page'
         end
-        it 'アカウント登録に失敗した場合、ページタイトルに「アカウント登録ページ」が表示される' do
+        it 'If account registration fails, "Account Registration Page" will be displayed in the page title' do
           visit new_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '登録する'
-          expect(page).to have_content 'アカウント登録ページ'
+          click_button 'Register'
+          expect(page).to have_content 'Account registration page'
         end
-        it 'ログインに成功した場合、ページタイトルに「タスク一覧ページ」が表示される' do
+        it 'If login is successful, "Task List Page" will be displayed in the page title' do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
-          expect(page).to have_content 'タスク一覧ページ'
+          click_button 'login'
+          expect(page).to have_content 'Task List Page'
         end
-        it 'ログインに失敗した場合、ページタイトルに「ログインページ」が表示される' do
+        it 'If login fails, "login page" will be displayed in the page title' do
           visit new_session_path
           find('input[name="session[email]"]').set('failed@email.com')
           find('input[name="session[password]"]').set('failed_password')
-          click_button 'ログイン'
-          expect(page).to have_content 'ログインページ'
+          click_button 'login'
+          expect(page).to have_content 'login page'
         end
       end
-      context '一般ユーザでログイン中の場合' do
+      context 'Logging in as a regular user' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'グローバルナビゲーションのリンクを要件通りに遷移させること' do
-          click_link 'アカウント'
-          expect(page).to have_content 'アカウント詳細ページ'
-          click_link 'ログアウト'
-          expect(page).to have_content 'ログインページ'
+        it 'Make global navigation links transition as per requirement' do
+          click_link 'account'
+          expect(page).to have_content 'Account details page'
+          click_link 'Logout'
+          expect(page).to have_content 'Login page'
         end
-        it 'アカウント詳細画面の「編集」をクリックした場合、ページタイトルに「アカウント編集ページ」が表示される' do
+        it 'When "Edit" is clicked on the account details page, "Account Edit Page" will be displayed in the page title' do
           visit user_path(user)
-          click_link '編集'
-          expect(page).to have_content 'アカウント編集ページ'
+          click_link 'edit'
+          expect(page).to have_content 'Edit account page'
         end
-        it 'アカウントの編集に成功した場合、ページタイトルに「アカウント詳細ページ」が表示される' do
+        it 'If the account is successfully edited, the "Account Details Page" will be displayed in the page title' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('edit_user_name')
           find('input[name="user[email]"]').set('edit_user@email.com')
           find('input[name="user[password]"]').set('edit_password')
           find('input[name="user[password_confirmation]"]').set('edit_password')
-          click_button '更新する'
-          expect(page).to have_content 'アカウント詳細ページ'
+          click_button 'update'
+          expect(page).to have_content 'Account details page'
         end
-        it 'アカウントの編集に失敗した場合、ページタイトルに「アカウント編集ページ」が表示される' do
+        it 'If editing the account fails, "Edit Account Page" will be displayed in the page title' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '更新する'
-          expect(page).to have_content 'アカウント編集ページ'
+          click_button 'update'
+          expect(page).to have_content 'Account edit page'
         end
-        it 'アカウント編集画面の「戻る」をクリックした場合、ページタイトルに「アカウント詳細ページ」が表示される' do
+        it "If you click 'Back' on the account edit page, the page title will show 'Account Details Page'" do
           visit edit_user_path(user)
-          click_link '戻る'
-          expect(page).to have_content 'アカウント詳細ページ'
+          click_link 'Back'
+          expect(page).to have_content 'Account details page'
         end
       end
-      context '管理者でログイン中の場合' do
+      context 'When logged in as administrator' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'グローバルナビゲーションのリンクを要件通りに遷移させること' do
-          click_link 'アカウント'
-          expect(page).to have_content 'アカウント詳細ページ'
-          click_link 'ログアウト'
-          expect(page).to have_content 'ログインページ'
+        it 'Make global navigation links transition as per requirement' do
+          click_link 'account'
+          expect(page).to have_content 'Account details page'
+          click_link 'Logout'
+          expect(page).to have_content 'Login page'
         end
-        it 'ユーザ一覧画面の「詳細」をクリックした場合、ページタイトルに「ユーザ詳細ページ」が表示される' do
+        it 'When "Details" is clicked on the user list page, "User Details Page" will be displayed in the page title' do
           visit admin_users_path
-          click_link '詳細', href: admin_user_path(user)
-          expect(page).to have_content 'ユーザ詳細ページ'
+          click_link 'details', href: admin_user_path(user)
+          expect(page).to have_content 'User details page'
         end
-        it 'ユーザ一覧画面の「編集」をクリックした場合、ページタイトルに「ユーザ編集ページ」が表示される' do
+        it 'When "Edit" is clicked on the user list screen, "Edit User Page" will be displayed in the page title' do
           visit admin_users_path
-          click_link '編集', href: edit_admin_user_path(user)
-          expect(page).to have_content 'ユーザ編集ページ'
+          click_link 'edit', href: edit_admin_user_path(user)
+          expect(page).to have_content 'Edit user page'
         end
-        it 'ユーザ一覧画面の「削除」をクリックした場合、ページタイトルに「ユーザ一覧ページ」が表示される' do
+        it 'When "Delete" is clicked on the user list page, "User List Page" will be displayed in the page title' do
           visit admin_users_path
-          click_link '削除', href: admin_user_path(user)
+          click_link 'delete', href: admin_user_path(user)
           page.driver.browser.switch_to.alert.accept
-          expect(page).to have_content 'ユーザ一覧ページ'
+          expect(page).to have_content 'user list page'
         end
-        it 'ユーザ編集画面の「戻る」をクリックした場合、ページタイトルに「ユーザ一覧ページ」が表示される' do
+        it 'When "Back" is clicked in the user edit screen, "User List Page" will be displayed in the page title' do
           visit edit_admin_user_path(user)
-          click_link '戻る'
-          expect(page).to have_content 'ユーザ一覧ページ'
+          click_link 'Back'
+          expect(page).to have_content 'User List Page'
         end
-        it 'ユーザの登録に成功した場合、ページタイトルに「ユーザ一覧ページ」が表示される' do
+        it "If a user is successfully registered, 'User List Page' will be displayed in the page title" do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '登録する'
-          expect(page).to have_content 'ユーザ一覧ページ'
+          click_button 'Register'
+          expect(page).to have_content 'User List Page'
         end
-        it 'ユーザの登録に失敗した場合、ページタイトルに「ユーザ登録ページ」が表示される' do
+        it 'If user registration fails, "User Registration Page" will be displayed in the page title' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '登録する'
-          expect(page).to have_content 'ユーザ登録ページ'
+          click_button 'Register'
+          expect(page).to have_content 'User registration page'
         end
-        it 'ユーザの編集に成功した場合、ページタイトルに「ユーザ一覧ページ」が表示される' do
+        it 'If the user is successfully edited, "User List Page" will be displayed in the page title' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('edit_user_name')
           find('input[name="user[email]"]').set('edit_user@email.com')
           find('input[name="user[password]"]').set('edit_password')
           find('input[name="user[password_confirmation]"]').set('edit_password')
-          click_button '更新する'
-          expect(page).to have_content 'ユーザ一覧ページ'
+          click_button 'update'
+          expect(page).to have_content 'User List Page'
         end
-        it 'ユーザの編集に失敗した場合、ページタイトルに「ユーザ編集ページ」が表示される' do
+        it 'If editing a user fails, "Edit User Page" will be displayed in the page title' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '更新する'
-          expect(page).to have_content 'ユーザ編集ページ'
+          click_button 'update'
+          expect(page).to have_content 'User edit page'
         end
       end
     end
   end
 
-  describe '機能要件' do
-    describe '9.ユーザを削除するリンクをクリックした際、確認ダイアログに「本当に削除してもよろしいですか？」という文字を表示させること' do
+  describe 'Functional Requirements' do
+    describe '9. When a user clicks on a link to delete a user, the confirmation dialog should say "Are you sure you want to delete this?" in the confirmation dialog.' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザを削除するリンクをクリックした際、確認ダイアログに"本当に削除してもよろしいですか？"という文字を表示させること' do
+      it 'When a user clicks on a link to delete a user, the confirmation dialog should say "Are you sure you want to delete this?" in the confirmation dialog.' do
         visit admin_users_path
-        click_link '削除', href: admin_user_path(user)
-        expect(page.driver.browser.switch_to.alert.text).to eq '本当に削除してもよろしいですか？'
+        click_link 'delete', href: admin_user_path(user)
+        expect(page.driver.browser.switch_to.alert.text).to eq 'Are you sure you want to delete this?'
       end
     end
 
-    describe '10.アカウントの登録や編集、ユーザの登録や編集でバリデーションに失敗した場合、要件で示した条件通りにバリデーションメッセージを表示させること' do
-      context 'アカウント登録画面' do
-        it 'すべてフォームが未入力の場合のバリデーションメッセージ' do
+    describe '10. If validation fails for registering or editing an account, or registering or editing a user, display a validation message as per the conditions indicated in the requirements' do
+      context 'Account registration screen' do
+        it 'Validation message if all forms are unfilled' do
           visit new_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '登録する'
-          expect(page).to have_content '名前を入力してください'
-          expect(page).to have_content 'メールアドレスを入力してください'
-          expect(page).to have_content 'パスワードを入力してください'
+          click_button 'Register'
+          expect(page).to have_content 'Please enter your name'
+          expect(page).to have_content 'Please enter your email address'
+          expect(page).to have_content 'Please enter your password'
         end
-        it 'すでに使用されているメールアドレスを入力した場合のバリデーションメッセージ' do
+        it 'Validation message if you enter an email address that is already in use' do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(user.email)
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
-          click_button '登録する'
-          expect(page).to have_content 'メールアドレスはすでに使用されています'
+          click_button 'Register'
+          expect(page).to have_content 'Your email address is already in use'
         end
-        it 'パスワードが6文字未満の場合のバリデーションメッセージ' do
+        it 'Validation message if password is less than 6 characters' do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('passw')
           find('input[name="user[password_confirmation]"]').set('passw')
-          click_button '登録する'
-          expect(page).to have_content 'パスワードは6文字以上で入力してください'
+          click_button 'Register'
+          expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'パスワードとパスワード（確認）が一致しない場合のバリデーションメッセージ' do
+        it 'Validation message if password and password (confirmation) do not match' do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
-          click_button '登録する'
-          expect(page).to have_content 'パスワード（確認）とパスワードの入力が一致しません'
+          click_button 'Register'
+          expect(page).to have_content 'Password (confirmation) and password input do not match'
         end
       end
-      context 'アカウント編集画面' do
+      context 'Account edit screen' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'すべてフォームが未入力の場合のバリデーションメッセージ' do
+        it 'Validation message if all forms are unfilled' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '更新する'
-          expect(page).to have_content '名前を入力してください'
-          expect(page).to have_content 'メールアドレスを入力してください'
-          expect(page).to have_content 'パスワードを入力してください'
+          click_button 'update'
+          expect(page).to have_content 'Please enter your name'
+          expect(page).to have_content 'Please enter your email address'
+          expect(page).to have_content 'Please enter your password'
         end
-        it 'すでに使用されているメールアドレスを入力した場合のバリデーションメッセージ' do
+        it 'Validation message if you enter an email address that is already in use' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(admin.email)
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
-          click_button '更新する'
-          expect(page).to have_content 'メールアドレスはすでに使用されています'
+          click_button 'update'
+          expect(page).to have_content 'The email address is already in use'
         end
-        it 'パスワードが6文字未満の場合のバリデーションメッセージ' do
+        it 'Validation message if password is less than 6 characters' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('passw')
           find('input[name="user[password_confirmation]"]').set('passw')
-          click_button '更新する'
-          expect(page).to have_content 'パスワードは6文字以上で入力してください'
+          click_button 'update'
+          expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'パスワードとパスワード（確認）が一致しない場合のバリデーションメッセージ' do
+        it 'Validation message if password and password (confirmation) do not match' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
-          click_button '更新する'
-          expect(page).to have_content 'パスワード（確認）とパスワードの入力が一致しません'
+          click_button 'update'
+          expect(page).to have_content 'Password (confirmation) and password input do not match'
         end
       end
-      context 'ユーザ登録画面' do
+      context 'User registration screen' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'すべてフォームが未入力の場合のバリデーションメッセージ' do
+        it 'Validation message if all forms are unfilled' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '登録する'
-          expect(page).to have_content '名前を入力してください'
-          expect(page).to have_content 'メールアドレスを入力してください'
-          expect(page).to have_content 'パスワードを入力してください'
+          click_button 'Register'
+          expect(page).to have_content 'Please enter your name'
+          expect(page).to have_content 'Please enter your email address'
+          expect(page).to have_content 'Please enter your password'
         end
-        it 'すでに使用されているメールアドレスを入力した場合のバリデーションメッセージ' do
+        it 'Validation message if you enter an email address that is already in use' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(user.email)
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
-          click_button '登録する'
-          expect(page).to have_content 'メールアドレスはすでに使用されています'
+          click_button 'Register'
+          expect(page).to have_content 'Your email address is already in use'
         end
-        it 'パスワードが6文字未満の場合のバリデーションメッセージ' do
+        it 'Validation message if password is less than 6 characters' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('passw')
           find('input[name="user[password_confirmation]"]').set('passw')
-          click_button '登録する'
-          expect(page).to have_content 'パスワードは6文字以上で入力してください'
+          click_button 'Register'
+          expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'パスワードとパスワード（確認）が一致しない場合のバリデーションメッセージ' do
+        it 'Validation message if password and password (confirmation) do not match' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
-          click_button '登録する'
-          expect(page).to have_content 'パスワード（確認）とパスワードの入力が一致しません'
+          click_button 'Register'
+          expect(page).to have_content 'Password (confirmation) and password input do not match'
         end
       end
-      context 'ユーザ編集画面' do
+      context 'user edit screen' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it 'すべてフォームが未入力の場合のバリデーションメッセージ' do
+        it 'Validation message if all forms are unfilled' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
           find('input[name="user[password]"]').set('')
           find('input[name="user[password_confirmation]"]').set('')
-          click_button '更新する'
-          expect(page).to have_content '名前を入力してください'
-          expect(page).to have_content 'メールアドレスを入力してください'
-          expect(page).to have_content 'パスワードを入力してください'
+          click_button 'update'
+          expect(page).to have_content 'Please enter your name'
+          expect(page).to have_content 'Please enter your email address'
+          expect(page).to have_content 'Please enter your password'
         end
-        it 'すでに使用されているメールアドレスを入力した場合のバリデーションメッセージ' do
+        it 'Validation message if you enter an email address that is already in use' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(admin.email)
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
-          click_button '更新する'
-          expect(page).to have_content 'メールアドレスはすでに使用されています'
+          click_button 'update'
+          expect(page).to have_content 'The email address is already in use'
         end
-        it 'パスワードが6文字未満の場合のバリデーションメッセージ' do
+        it 'Validation message if password is less than 6 characters' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('passw')
           find('input[name="user[password_confirmation]"]').set('passw')
-          click_button '更新する'
-          expect(page).to have_content 'パスワードは6文字以上で入力してください'
+          click_button 'update'
+          expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'パスワードとパスワード（確認）が一致しない場合のバリデーションメッセージ' do
+        it 'Validation message if password and password (confirmation) do not match' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
-          click_button '更新する'
-          expect(page).to have_content 'パスワード（確認）とパスワードの入力が一致しません'
+          click_button 'update'
+          expect(page).to have_content 'Password (confirmation) and password input do not match'
         end
       end
     end
 
-    describe '11.要件で示した条件通りにフラッシュメッセージを表示させること' do
-      context 'アカウントの登録に成功した場合' do
-        it '「アカウントを登録しました」というフラッシュメッセージを表示させること' do
+    describe '11. To display the flash message as per the conditions indicated in the requirements.' do
+      context 'If the account is successfully registered' do
+        it 'To display a flash message "You have registered an account"' do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '登録する'
-          expect(page).to have_content 'アカウントを登録しました'
+          click_button 'Register'
+          expect(page).to have_content 'You have registered your account'
         end
       end
-      context 'アカウントの更新に成功した場合' do
+      context 'If the account is successfully updated' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it '「アカウントを更新しました」というフラッシュメッセージを表示させること' do
+        it 'To display a flash message "You have updated your account"' do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '更新する'
-          expect(page).to have_content 'アカウントを更新しました'
+          click_button 'update'
+          expect(page).to have_content 'You have updated your account'
         end
       end
-      context 'ログインに成功した場合' do
-        it '「ログインしました」というフラッシュメッセージを表示させること' do
+      context 'If login was successful' do
+        it 'To display a flash message "You are logged in"' do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
-          expect(page).to have_content 'ログインしました'
+          click_button 'login'
+          expect(page).to have_content 'You are logged in'
         end
       end
-      context 'ログインに失敗した場合' do
-        it '「メールアドレスまたはパスワードに誤りがあります」というフラッシュメッセージを表示させること' do
+      context 'Login failed' do
+        it 'To display a flash message "You have an incorrect email address or password"' do
           visit new_session_path
           find('input[name="session[email]"]').set('failed_user@email.com')
           find('input[name="session[password]"]').set('failed_password')
-          click_button 'ログイン'
-          expect(page).to have_content 'メールアドレスまたはパスワードに誤りがあります'
+          click_button 'login'
+          expect(page).to have_content 'There is an error in your email address or password'
         end
       end
-      context 'ログアウトした場合' do
+      context 'If you logged out' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it '「ログアウトしました」というフラッシュメッセージを表示させること' do
-          click_link 'ログアウト'
-          expect(page).to have_content 'ログアウトしました'
+        it 'To display a flash message saying "You are logged out"' do
+          click_link 'Logout'
+          expect(page).to have_content 'You are logged out'
         end
       end
-      context 'ユーザの登録に成功した場合' do
+      context 'If the user is successfully registered' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it '「ユーザを登録しました」というフラッシュメッセージを表示させること' do
+        it 'To display a flash message "You have registered a user"' do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '登録する'
-          expect(page).to have_content 'ユーザを登録しました'
+          click_button 'Register'
+          expect(page).to have_content 'User has been registered'
         end
       end
-      context 'ユーザの更新に成功した場合' do
+      context 'If the user is successfully updated' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it '「ユーザを更新しました」というフラッシュメッセージを表示させること' do
+        it 'To display a flash message "User updated"' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
-          click_button '更新する'
-          expect(page).to have_content 'ユーザを更新しました'
+          click_button 'update'
+          expect(page).to have_content 'User has been updated'
         end
       end
-      context 'ユーザを削除した場合' do
+      context 'Deleting a user' do
         before do
           visit new_session_path
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
-          click_button 'ログイン'
+          click_button 'login'
         end
-        it '「ユーザを削除しました」というフラッシュメッセージを表示させること' do
+        it 'To display a flash message "User deleted"' do
           visit admin_users_path
-          click_link '削除', href: admin_user_path(user)
+          click_link 'delete', href: admin_user_path(user)
           page.driver.browser.switch_to.alert.accept
-          expect(page).to have_content 'ユーザを削除しました'
+          expect(page).to have_content 'User has been deleted'
         end
       end
     end
 
-    describe '12.メールアドレスの大文字と小文字の区別をなくす設定を追加すること' do
-      it 'すでにあるメールアドレスの文字サイズを変えて登録しようとした場合、「メールアドレスはすでに使用されています」というバリデーションメッセージが表示される' do
+    describe '12. Add a setting to make email addresses case-insensitive' do
+      it 'When I try to register an existing email address by changing the font size, I get a validation message that the email address is already in use' do
         visit new_user_path
         find('input[name="user[name]"]').set('new_user_name')
         find('input[name="user[email]"]').set('User@email.com')
         find('input[name="user[password]"]').set('new_password')
         find('input[name="user[password_confirmation]"]').set('new_password')
-        click_button '登録する'
-        expect(page).to have_content 'メールアドレスはすでに使用されています'
+        click_button 'Register'
+        expect(page).to have_content 'Your email address is already in use'
       end
     end
 
-    describe '13.ユーザとタスクにアソシエーションを組み、タスク一覧画面に自分が作成したタスクのみ表示させること' do
+    describe '13. Create an association between users and tasks so that only tasks created by the user are shown in the task list screen' do
       let!(:second_user) { User.create(name: 'second_user_name', email: 'second_user@email.com', password: 'password') }
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(user.email)
         find('input[name="session[password]"]').set(user.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザとタスクにアソシエーションを組み、タスク一覧画面に自分が作成したタスクのみ表示させること' do
+      it 'To create an association between a user and a task, and to show only the tasks created by the user in the task list screen' do
         5.times do |n|
           Task.create(title: "task_title_#{n}", content: "task_content_#{n}", deadline_on: Date.today, priority: 0, status: 0, user_id: user.id)
           Task.create(title: "second_user_task_title_#{n}", content: "task_content_#{n}", deadline_on: Date.today, priority: 0, status: 0, user_id: second_user.id)
@@ -842,204 +842,204 @@ RSpec.describe 'step4', type: :system do
       end
     end
 
-    describe '14.ログインをせずにログイン画面とアカウント登録画面以外にアクセスした場合、ログインページに遷移させ「ログインしてください」というフラッシュメッセージを表示させること' do
+    describe '14. If a user accesses a page other than the login screen and account registration screen without logging in, the user should be redirected to the login page and shown a flash message "Please login"' do
       let!(:task){Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: user.id)}
-      it 'タスク一覧画面にアクセスした場合' do
+      it 'When you access the task list screen' do
         visit tasks_path
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'タスク詳細画面にアクセスした場合' do
+      it 'If you access the task details screen' do
         visit task_path(task)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'タスク編集画面にアクセスした場合' do
+      it 'If you access the task edit screen' do
         visit edit_task_path(task)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'アカウント詳細画面にアクセスした場合' do
+      it 'If you access the account details screen' do
         visit user_path(user)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'アカウント編集画面にアクセスした場合' do
+      it 'If you access the edit account page' do
         visit edit_user_path(user)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'ユーザ一覧画面にアクセスした場合' do
+      it 'If you access the user list screen' do
         visit admin_users_path
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'ユーザ登録画面にアクセスした場合' do
+      it 'If you access the user registration page' do
         visit new_admin_user_path
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'ユーザ詳細画面にアクセスした場合' do
+      it 'If you access the user details page' do
         visit admin_user_path(user)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
-      it 'ユーザ編集画面にアクセスした場合' do
+      it 'If you access the user edit screen' do
         visit edit_admin_user_path(user)
         expect(current_path).to eq new_session_path
-        expect(page).to have_content 'ログインしてください'
+        expect(page).to have_content 'Please login'
       end
     end
 
-    describe '15.ログイン中にログイン画面、あるいはアカウント登録画面にアクセスした場合、タスク一覧画面に遷移させ「ログアウトしてください」というフラッシュメッセージを表示させること' do
+    describe '15. If you access the login screen or account registration screen while logged in, you should be taken to the task list screen and shown a flash message "Please log out"' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ログイン画面にアクセスした場合' do
+      it 'If you access the login screen' do
         visit new_session_path
         expect(current_path).not_to eq new_session_path
-        expect(page).to have_content 'ログアウトしてください'
+        expect(page).to have_content 'Please logout'
       end
-      it 'アカウント登録画面にアクセスした場合' do
+      it 'If you have accessed the account registration page' do
         visit new_user_path
         expect(current_path).not_to eq new_user_path
-        expect(page).to have_content 'ログアウトしてください'
+        expect(page).to have_content 'Please logout'
       end
     end
 
-    describe '16.他人のタスク詳細画面、あるいはタスク編集画面にアクセスしようとした場合、タスク一覧画面に遷移させ「本人以外アクセスできません」というフラッシュメッセージを表示させること' do
+    describe "16. When someone tries to access another person's task detail screen or task edit screen, the user will be redirected to the task list screen with a flash message that says 'Only the user can access'" do
       let!(:second_user) { User.create(name: 'second_user_name', email: 'second_user@email.com', password: 'password') }
-      let!(:second_user_task){Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: second_user.id)}
+      let!(:second_user_task){ Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: second_user.id)}
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(user.email)
         find('input[name="session[password]"]').set(user.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'タスク詳細画面にアクセスした場合' do
+      it 'If you access the task details screen' do
         visit task_path(second_user_task)
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '本人以外アクセスできません'
+        expect(page).to have_content 'Only you can access this page'
       end
-      it 'タスク編集画面にアクセスした場合' do
+      it 'If you access the task edit screen' do
         visit edit_task_path(second_user_task)
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '本人以外アクセスできません'
+        expect(page).to have_content 'Only you can access this page'
       end
     end
 
-    describe '17.ユーザを削除した際、そのユーザに紐づいているすべてのタスクが削除されること' do
+    describe '17. When a user is deleted, all tasks associated with that user will be deleted' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザを削除した際、そのユーザに紐づいているすべてのタスクが削除されること' do
+      it 'When a user is deleted, all tasks associated with that user will be deleted' do
         10.times do
           Task.create(title: 'task_title', content: 'task_content', deadline_on: Date.today, priority: 0, status: 0, user_id: user.id)
         end
         visit admin_users_path
-        click_link '削除', href: admin_user_path(user)
+        click_link 'delete', href: admin_user_path(user)
         page.driver.browser.switch_to.alert.accept
         sleep 0.5
         expect(Task.all.count).to eq 0
       end
     end
 
-    describe '18.ユーザの登録画面と編集画面で管理者権限の付け外しができること' do
+    describe '18. The ability to add and remove admin rights on the user registration and edit screens' do
       let!(:second_admin) { User.create(name: 'second_admin_name', email: 'second_admin@email.com', password: 'password', admin: true) }
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザの登録画面で管理者権限の付け外しができること' do
+      it 'The ability to add or remove admin rights on the user registration screen' do
         visit new_admin_user_path
         find('input[name="user[name]"]').set('new_user_name')
         find('input[name="user[email]"]').set('new_user@email.com')
         find('input[name="user[password]"]').set('password')
         find('input[name="user[password_confirmation]"]').set('password')
         check 'user[admin]'
-        click_button '登録する'
+        click_button 'register'
         expect(User.find_by(email: 'new_user@email.com').admin).to eq true
       end
-      it 'ユーザの編集画面で管理者権限の付け外しができること' do
+      it "The ability to add and remove admin rights on the user's edit screen" do
         visit edit_admin_user_path(second_admin)
         find('input[name="user[name]"]').set('new_user_name')
         find('input[name="user[email]"]').set('new_user@email.com')
         find('input[name="user[password]"]').set('password')
         find('input[name="user[password_confirmation]"]').set('password')
         uncheck 'user[admin]'
-        click_button '更新する'
+        click_button 'update'
         expect(User.find_by(email: 'new_user@email.com').admin).to eq false
       end
     end
 
-    describe '19.一般ユーザが管理画面（新たに作成した4つの画面のいずれか）にアクセスした場合、タスク一覧画面に遷移させ「管理者以外はアクセスできません」というフラッシュメッセージを表示させること' do
+    describe '19. When a regular user accesses the administration screen (one of the four newly created screens), the user should be redirected to the task list screen and shown a flash message "Only administrator can access"' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(user.email)
         find('input[name="session[password]"]').set(user.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it 'ユーザ一覧画面にアクセスした場合、タスク一覧画面に遷移させ「管理者以外はアクセスできません」というフラッシュメッセージを表示させること' do
+      it 'When the user list screen is accessed, the user should be redirected to the task list screen and a flash message "Only administrators can access" should be displayed' do
         visit admin_users_path
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '管理者以外はアクセスできません'
+        expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'ユーザ登録画面にアクセスした場合、タスク一覧画面に遷移させ「管理者以外はアクセスできません」というフラッシュメッセージを表示させること' do
+      it 'When the user registration screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access" will be displayed' do
         visit new_admin_user_path
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '管理者以外はアクセスできません'
+        expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'ユーザ詳細画面にアクセスした場合、タスク一覧画面に遷移させ「管理者以外はアクセスできません」というフラッシュメッセージを表示させること' do
+      it 'When the user details screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrator can access" will be displayed' do
         visit admin_user_path(user)
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '管理者以外はアクセスできません'
+        expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'ユーザ編集画面にアクセスした場合、タスク一覧画面に遷移させ「管理者以外はアクセスできません」というフラッシュメッセージを表示させること' do
+      it 'When the user edit screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access" will be displayed' do
         visit edit_admin_user_path(user)
         expect(current_path).to eq tasks_path
-        expect(page).to have_content '管理者以外はアクセスできません'
+        expect(page).to have_content 'Only administrators can access this page'
       end
     end
 
-    describe '20.管理者が一人しかいない状態でそのユーザを削除しようとした場合、モデルのコールバックを使って削除できないよう制御し、「管理者権限を持つアカウントが0件になるため削除できません」というフラッシュメッセージを表示させること' do
+    describe '20. If there is only one administrator and you try to delete the user, use the model callback to control the deletion and display a flash message "Cannot delete because there are zero accounts with admin rights"' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it '管理者が一人しかいない状態でそのユーザを削除しようとした場合、モデルのコールバックを使って削除できないよう制御し、「管理者権限を持つアカウントが0件になるため削除できません」というフラッシュメッセージを表示させること' do
+      it 'If there is only one administrator and you try to delete the user, use the model callback to control that the user cannot be deleted and display the flash message "Cannot delete because there are 0 accounts with admin rights"' do
         visit admin_users_path
-        click_link '削除', href: admin_user_path(admin)
+        click_link 'delete', href: admin_user_path(admin)
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content '管理者権限を持つアカウントが0件になるため削除できません'
+        expect(page).to have_content 'Cannot delete because there are 0 accounts with admin rights'
       end
     end
 
-    describe '21.管理者が一人しかいない状態でそのユーザから管理者権限を外す更新をしようとした場合、モデルのコールバックを使って更新できないよう制御し、「管理者権限を持つアカウントが0件になるため更新できません」というエラーメッセージを表示させること' do
+    describe '21. If there is only one administrator and an update is attempted to remove admin rights from that user, use the model callback to control that update cannot be done and display the error message "Cannot update because there are zero accounts with admin rights"' do
       before do
         visit new_session_path
         find('input[name="session[email]"]').set(admin.email)
         find('input[name="session[password]"]').set(admin.password)
-        click_button 'ログイン'
+        click_button 'login'
       end
-      it '管理者が一人しかいない状態でそのユーザから管理者権限を外す更新をしようとした場合、モデルのコールバックを使って更新できないよう制御し、「管理者権限を持つアカウントが0件になるため更新できません」というエラーメッセージを表示させること' do
+      it 'To control that if there is only one administrator and an update is attempted to remove administrative privileges from that user, the model callback will be used to prevent the update and display the error message "Cannot update because there are zero accounts with administrative privileges"' do
         visit edit_admin_user_path(admin)
         find('input[name="user[name]"]').set(admin.name)
         find('input[name="user[email]"]').set(admin.email)
         find('input[name="user[password]"]').set(admin.password)
         find('input[name="user[password_confirmation]"]').set(admin.password)
         uncheck 'user[admin]'
-        click_button '更新する'
-        expect(page).to have_content '管理者権限を持つアカウントが0件になるため更新できません'
+        click_button 'update'
+        expect(page).to have_content 'Cannot update because there are 0 accounts with admin rights'
       end
     end
   end
