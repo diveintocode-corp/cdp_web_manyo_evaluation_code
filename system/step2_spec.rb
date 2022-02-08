@@ -44,15 +44,15 @@ RSpec.describe 'step2', type: :system do
         expect(page).to have_selector '#back', text: 'Back'
       end
       context 'Validation message' do
-        it 'If the title and content are not entered in the task registration screen, the validation messages "Title can not be blank" and "Content can not be blank" will be displayed.' do
+        it 'If the title and content are not entered in the task registration screen, the validation messages "Please enter a title" and "Please enter the content" will be displayed.' do
           visit new_task_path
           find('input[name="task[title]"]').set('')
           find('textarea[name="task[content]"]').set('')
           find('#create-task').click
-          expect(page).to have_content "Please enter a title."
+          expect(page).to have_content "Please enter a title"
           expect(page).to have_content "Please enter the content"
         end
-        it 'If the title and content are not entered in the task edit screen, the validation messages "Title can not be blank" and "Content can not be blank" will be displayed.' do
+        it 'If the title and content are not entered in the task edit screen, the validation messages "Please enter a title" and "Please enter the content" will be displayed.' do
           visit edit_task_path(task)
           find('input[name="task[title]"]').set('')
           find('textarea[name="task[content]"]').set('')
@@ -62,25 +62,25 @@ RSpec.describe 'step2', type: :system do
         end
       end
       context 'Flash message' do
-        it 'If the task was successfully registered,  the flash message "Task was successfully registered" will be displayed.' do
+        it 'If the task was successfully registered,  the flash message "You have registered a task" will be displayed.' do
           visit new_task_path
           fill_in 'title', with: 'sample title'
           fill_in 'content', with: 'sample content'
           click_button 'register'
-          expect(page).to have_content "You have registered a task."
+          expect(page).to have_content "You have registered a task"
         end
-        it 'If the task was successfully updated,   the flash message "Task was successfully updated" will be displayed.' do
+        it 'If the task was successfully updated,   the flash message "You have updated the task" will be displayed.' do
           visit edit_task_path(task)
           fill_in 'title', with: 'update sample title'
           fill_in 'content', with: 'update sample content'
           click_button 'update'
-          expect(page).to have_content "You have updated the task."
+          expect(page).to have_content "You have updated the task"
         end
-        it 'Deleting a task, the flash message "Task was successfully destroyed" will be displayed.' do
+        it 'Deleting a task, the flash message "You have deleted the task" will be displayed.' do
           visit tasks_path
           click_link 'delete'
           page.driver.browser.switch_to.alert.accept
-          expect(page).to have_content "Deleted the task."
+          expect(page).to have_content "You have deleted the task"
         end
       end
     end
