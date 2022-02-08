@@ -461,11 +461,11 @@ RSpec.describe 'step5', type: :system do
         end
       end
       context 'Removed the label' do
-        it 'To display a flash message "Label removed"' do
+        it 'To display a flash message "Label deleted"' do
           visit labels_path
           click_link 'deleted', href: label_path(label_created_by_user)
           page.driver.browser.switch_to.alert.accept
-          expect(page).to have_content 'Label removed'
+          expect(page).to have_content 'Label deleted'
         end
       end
     end
