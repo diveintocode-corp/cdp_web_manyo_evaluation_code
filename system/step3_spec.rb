@@ -190,7 +190,7 @@ RSpec.describe 'step3', type: :system do
   describe 'Functional requirements' do
     describe '18. To be able to register the due date, priority, and status when registering or editing a task' do
       context 'Registration screen' do
-        it "Can register the due date, priority 'high', and status 'not started'" do
+        it 'can register a due date, priority "high", and status "not started"' do
           visit new_task_path
           find('input[name="task[title]"]').set('task_title')
           find('textarea[name="task[content]"]').set('task_content')
@@ -323,7 +323,7 @@ RSpec.describe 'step3', type: :system do
       end
     end
     describe "22. Implement a function to search by status 'not started', 'in progress', or 'completed' in the list screen" do
-      it 'Can search by "Not Started"' do
+      it 'can search by "not started"' do
         visit tasks_path
         select 'Not Started', from: "search[status]"
         find('#search_task').click
@@ -338,7 +338,7 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_10'
         expect(page).not_to have_content 'task_title_11'
       end
-      it 'can be searched for in undelivered' do
+      it 'can be search by  "in progress"' do
         visit tasks_path
         select 'in progress', from: "search[status]"
         find('#search_task').click
@@ -353,7 +353,7 @@ RSpec.describe 'step3', type: :system do
         expect(page).not_to have_content 'task_title_9'
         expect(page).not_to have_content 'task_title_11'
       end
-      it 'can be searched by completion' do
+      it 'can be search by "completed"' do
         visit tasks_path
         select 'completion', from: "search[status]"
         find('#search_task').click
