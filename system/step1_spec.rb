@@ -12,7 +12,7 @@ RSpec.describe 'step1', type: :system do
         visit task_path(task)
         visit edit_task_path(task)
       end
-      it 'The screen title of the "Tasks Index Page" should be displayed when the root is accessed' do
+      it 'The screen title of the "Tasks Index Page" should be displayed when accessing the route' do
         visit root_path
         expect(page).to have_content 'Tasks Index Page'
       end
@@ -186,7 +186,7 @@ RSpec.describe 'step1', type: :system do
     end
     describe '8. If validation fails on task registration or editing, display validation message as per requirement' do
       context 'Task registration screen' do
-        it 'If the title is not entered, the validation message "Title can nott be blank" should be displayed' do
+        it 'If the title is not entered, the validation message "Title can not be blank" should be displayed' do
           visit new_task_path
           fill_in 'Title', with: ''
           fill_in 'Content', with: ''
