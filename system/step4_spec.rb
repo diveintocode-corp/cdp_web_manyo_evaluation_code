@@ -8,7 +8,7 @@ RSpec.describe 'step4', type: :system do
   describe 'Screen transition requirements' do
     describe '1. path prefix can be used as per requirement' do
       context 'If you are logged out' do
-        it 'Path prefix can be used as per requirement' do
+        it 'The path prefix can be used as per requirement' do
           visit new_session_path
           visit new_user_path
         end
@@ -309,7 +309,7 @@ RSpec.describe 'step4', type: :system do
         click_link 'details', href: admin_user_path(admin)
         expect(page).to have_content 'Yes'
       end
-      it 'For general users, "Yes" will be displayed' do
+      it 'For general users, "No" will be displayed' do
         click_link 'User List'
         click_link 'Details', href: admin_user_path(user)
         expect(page).to have_content 'None'
@@ -521,7 +521,7 @@ RSpec.describe 'step4', type: :system do
 
     describe '10. If validation fails for registering or editing an account, or registering or editing a user, display a validation message as per the conditions indicated in the requirements' do
       context 'Account registration screen' do
-        it 'Validation message if all forms are unfilled' do
+        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -532,7 +532,7 @@ RSpec.describe 'step4', type: :system do
           expect(page).to have_content 'Please enter your email address'
           expect(page).to have_content 'Please enter your password'
         end
-        it 'Validation message if you enter an email address that is already in use' do
+        it "Validation message if you enter an email address that is already in use, the validation messages [Email address is already in use] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(user.email)
@@ -541,7 +541,7 @@ RSpec.describe 'step4', type: :system do
           click_button 'Register'
           expect(page).to have_content 'Your email address is already in use'
         end
-        it 'Validation message if password is less than 6 characters' do
+        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -550,7 +550,7 @@ RSpec.describe 'step4', type: :system do
           click_button 'Register'
           expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'Validation message if password and password (confirmation) do not match' do
+        it "Validation message if password and password (confirmation) do not match, the validation messages [Password confirmation doesn't match Password] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -567,7 +567,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(user.password)
           click_button 'login'
         end
-        it 'Validation message if all forms are unfilled' do
+        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] and [Password can't be blank] will be displayed." do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -578,7 +578,7 @@ RSpec.describe 'step4', type: :system do
           expect(page).to have_content 'Please enter your email address'
           expect(page).to have_content 'Please enter your password'
         end
-        it 'Validation message if you enter an email address that is already in use' do
+        it "Validation message if you enter an email address that is already in use, the validation messages [Email address is already in use] will be displayed." do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(admin.email)
@@ -587,7 +587,7 @@ RSpec.describe 'step4', type: :system do
           click_button 'update'
           expect(page).to have_content 'The email address is already in use'
         end
-        it 'Validation message if password is less than 6 characters' do
+        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -596,7 +596,8 @@ RSpec.describe 'step4', type: :system do
           click_button 'update'
           expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'Validation message if password and password (confirmation) do not match' do
+        it "Validation message if password and password (confirmation) do not match, the validation messages [Password confirmation doesn't match Password] will be displayed.
+" do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -613,7 +614,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           click_button 'login'
         end
-        it 'Validation message if all forms are unfilled' do
+        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -624,7 +625,7 @@ RSpec.describe 'step4', type: :system do
           expect(page).to have_content 'Please enter your email address'
           expect(page).to have_content 'Please enter your password'
         end
-        it 'Validation message if you enter an email address that is already in use' do
+        it "Validation message if you enter an email address that is already in use, the validation messages [Email address is already in use] will be displayed." do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(user.email)
@@ -633,7 +634,7 @@ RSpec.describe 'step4', type: :system do
           click_button 'Register'
           expect(page).to have_content 'Your email address is already in use'
         end
-        it 'Validation message if password is less than 6 characters' do
+        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -642,7 +643,8 @@ RSpec.describe 'step4', type: :system do
           click_button 'Register'
           expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'Validation message if password and password (confirmation) do not match' do
+        it "Validation message if password and password (confirmation) do not match, the validation messages [Password confirmation doesn't match Password] will be displayed.
+" do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -659,7 +661,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           click_button 'login'
         end
-        it 'Validation message if all forms are unfilled' do
+        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -670,7 +672,8 @@ RSpec.describe 'step4', type: :system do
           expect(page).to have_content 'Please enter your email address'
           expect(page).to have_content 'Please enter your password'
         end
-        it 'Validation message if you enter an email address that is already in use' do
+        it "Validation message if you enter an email address that is already in use, the validation messages [Email address is already in use] will be displayed.
+" do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set(admin.email)
@@ -679,7 +682,7 @@ RSpec.describe 'step4', type: :system do
           click_button 'update'
           expect(page).to have_content 'The email address is already in use'
         end
-        it 'Validation message if password is less than 6 characters' do
+        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -688,7 +691,8 @@ RSpec.describe 'step4', type: :system do
           click_button 'update'
           expect(page).to have_content 'Please enter a password of at least 6 characters'
         end
-        it 'Validation message if password and password (confirmation) do not match' do
+        it "Validation message if password and password (confirmation) do not match, the validation messages [Password confirmation doesn't match Password] will be displayed.
+" do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -1016,7 +1020,7 @@ RSpec.describe 'step4', type: :system do
         find('input[name="session[password]"]').set(admin.password)
         click_button 'login'
       end
-      it 'If there is only one administrator and you try to delete the user, use the model callback to control that the user cannot be deleted and display the flash message "Cannot delete because there are 0 accounts with admin rights"' do
+      it "If there is only one administrator and you try to delete the user, use the model callback to control that the user cannot be deleted and display the flash message [Cannot delete because there are zero accounts with admin rights]" do
         visit admin_users_path
         click_link 'delete', href: admin_user_path(admin)
         page.driver.browser.switch_to.alert.accept
