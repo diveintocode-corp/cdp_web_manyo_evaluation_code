@@ -521,7 +521,7 @@ RSpec.describe 'step4', type: :system do
 
     describe '10. If validation fails for registering or editing an account, or registering or editing a user, display a validation message as per the conditions indicated in the requirements' do
       context 'Account registration screen' do
-        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if all forms are unfilled, the validation messages [Please enter your name] ,[Please enter your email address] and [Please enter your password] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -539,9 +539,9 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
           click_button 'Register'
-          expect(page).to have_content 'Your email address is already in use'
+          expect(page).to have_content 'Email address is already in use'
         end
-        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if password is less than 6 characters, the validation messages [Please enter a password of at least 6 characters] will be displayed." do
           visit new_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -557,7 +557,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
           click_button 'Register'
-          expect(page).to have_content 'Password (confirmation) and password input do not match'
+          expect(page).to have_content "Password confirmation doesn't match Password"
         end
       end
       context 'Account edit screen' do
@@ -567,7 +567,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(user.password)
           click_button 'login'
         end
-        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] and [Password can't be blank] will be displayed." do
+        it "Validation message if all forms are unfilled, the validation messages [Please enter your name], [Please enter your email address] and [Please enter your password] will be displayed." do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -585,9 +585,9 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
           click_button 'update'
-          expect(page).to have_content 'The email address is already in use'
+          expect(page).to have_content 'Email address is already in use'
         end
-        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if password is less than 6 characters, the validation messages [Please enter a password of at least 6 characters] will be displayed." do
           visit edit_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -604,7 +604,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
           click_button 'update'
-          expect(page).to have_content 'Password (confirmation) and password input do not match'
+          expect(page).to have_content "Password confirmation doesn't match Password"
         end
       end
       context 'User registration screen' do
@@ -614,7 +614,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           click_button 'login'
         end
-        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if all forms are unfilled, the validation messages [Please enter your name] ,[Please enter your email address] and [Please enter your password] will be displayed." do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -632,9 +632,9 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
           click_button 'Register'
-          expect(page).to have_content 'Your email address is already in use'
+          expect(page).to have_content 'Email address is already in use'
         end
-        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if password is less than 6 characters, the validation messages [Please enter a password of at least 6 characters] will be displayed." do
           visit new_admin_user_path
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -651,7 +651,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
           click_button 'Register'
-          expect(page).to have_content 'Password (confirmation) and password input do not match'
+          expect(page).to have_content "Password confirmation doesn't match Password"
         end
       end
       context 'user edit screen' do
@@ -661,7 +661,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           click_button 'login'
         end
-        it "Validation message if all forms are unfilled, the validation messages [Email can't be blank] ,[Email is invalid], [Password can't be blank] and [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if all forms are unfilled, the validation messages [Please enter your name] ,[Please enter your email address] and [Please enter your password] will be displayed." do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('')
           find('input[name="user[email]"]').set('')
@@ -680,9 +680,9 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('password')
           click_button 'update'
-          expect(page).to have_content 'The email address is already in use'
+          expect(page).to have_content 'Email address is already in use'
         end
-        it "Validation message if password is less than 6 characters, the validation messages [Password is too short (minimum is 6 characters)] will be displayed." do
+        it "Validation message if password is less than 6 characters, the validation messages [Please enter a password of at least 6 characters] will be displayed." do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -699,7 +699,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('password')
           find('input[name="user[password_confirmation]"]').set('passwordd')
           click_button 'update'
-          expect(page).to have_content 'Password (confirmation) and password input do not match'
+          expect(page).to have_content "Password confirmation doesn't match Password"
         end
       end
     end
@@ -713,7 +713,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
           click_button 'Register'
-          expect(page).to have_content 'You have registered your account'
+          expect(page).to have_content 'You have registered an account'
         end
       end
       context 'If the account is successfully updated' do
@@ -748,7 +748,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[email]"]').set('failed_user@email.com')
           find('input[name="session[password]"]').set('failed_password')
           click_button 'login'
-          expect(page).to have_content 'There is an error in your email address or password'
+          expect(page).to have_content 'You have an incorrect email address or password'
         end
       end
       context 'If you logged out' do
@@ -777,7 +777,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="user[password]"]').set('new_password')
           find('input[name="user[password_confirmation]"]').set('new_password')
           click_button 'Register'
-          expect(page).to have_content 'User has been registered'
+          expect(page).to have_content 'You have registered a user'
         end
       end
       context 'If the user is successfully updated' do
@@ -787,7 +787,7 @@ RSpec.describe 'step4', type: :system do
           find('input[name="session[password]"]').set(admin.password)
           click_button 'login'
         end
-        it 'To display a flash message "User updated"' do
+        it 'To display a flash message "User has been updated"' do
           visit edit_admin_user_path(user)
           find('input[name="user[name]"]').set('new_user_name')
           find('input[name="user[email]"]').set('new_user@email.com')
@@ -808,20 +808,20 @@ RSpec.describe 'step4', type: :system do
           visit admin_users_path
           click_link 'delete', href: admin_user_path(user)
           page.driver.browser.switch_to.alert.accept
-          expect(page).to have_content 'User has been deleted'
+          expect(page).to have_content 'User deleted'
         end
       end
     end
 
     describe '12. Add a setting to make email addresses case-insensitive' do
-      it 'When I try to register an existing email address by changing the font size, I get a validation message that the email address is already in use' do
+      it 'When I try to register an existing email address by changing the font size, I get a validation message that [Email address is already in use]' do
         visit new_user_path
         find('input[name="user[name]"]').set('new_user_name')
         find('input[name="user[email]"]').set('User@email.com')
         find('input[name="user[password]"]').set('new_password')
         find('input[name="user[password_confirmation]"]').set('new_password')
         click_button 'Register'
-        expect(page).to have_content 'Your email address is already in use'
+        expect(page).to have_content 'Email address is already in use'
       end
     end
 
@@ -991,22 +991,22 @@ RSpec.describe 'step4', type: :system do
         find('input[name="session[password]"]').set(user.password)
         click_button 'login'
       end
-      it 'When the user list screen is accessed, the user should be redirected to the task list screen and a flash message "Only administrators can access" should be displayed' do
+      it 'When the user list screen is accessed, the user should be redirected to the task list screen and a flash message "Only administrators can access this page" should be displayed' do
         visit admin_users_path
         expect(current_path).to eq tasks_path
         expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'When the user registration screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access" will be displayed' do
+      it 'When the user registration screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access this page" will be displayed' do
         visit new_admin_user_path
         expect(current_path).to eq tasks_path
         expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'When the user details screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrator can access" will be displayed' do
+      it 'When the user details screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access this page" will be displayed' do
         visit admin_user_path(user)
         expect(current_path).to eq tasks_path
         expect(page).to have_content 'Only administrators can access this page'
       end
-      it 'When the user edit screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access" will be displayed' do
+      it 'When the user edit screen is accessed, the user will be redirected to the task list screen and a flash message "Only administrators can access this page" will be displayed' do
         visit edit_admin_user_path(user)
         expect(current_path).to eq tasks_path
         expect(page).to have_content 'Only administrators can access this page'
@@ -1024,7 +1024,7 @@ RSpec.describe 'step4', type: :system do
         visit admin_users_path
         click_link 'delete', href: admin_user_path(admin)
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content 'Cannot delete because there are 0 accounts with admin rights'
+        expect(page).to have_content 'Cannot delete because there are zero accounts with admin rights'
       end
     end
 
@@ -1043,7 +1043,7 @@ RSpec.describe 'step4', type: :system do
         find('input[name="user[password_confirmation]"]').set(admin.password)
         uncheck 'user[admin]'
         click_button 'update'
-        expect(page).to have_content 'Cannot update because there are 0 accounts with admin rights'
+        expect(page).to have_content 'Cannot update because there are zero accounts with administrative privileges'
       end
     end
   end
