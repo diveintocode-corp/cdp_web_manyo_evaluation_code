@@ -51,7 +51,7 @@ RSpec.describe 'step4', type: :system do
           visit root_path
           expect(page).to have_css '#sign-up'
           expect(page).to have_css '#sign-in'
-          expect(page).not_to have_css '#my-account'
+          expect(page).not_to have_css '#account-setting'
           expect(page).not_to have_css '#sign-out'
           expect(page).not_to have_css '#users-index'
           expect(page).not_to have_css '#new-user'
@@ -76,7 +76,7 @@ RSpec.describe 'step4', type: :system do
           find('#create-session').click
         end
         it 'グローバルナビゲーション' do
-          expect(page).to have_css '#my-account'
+          expect(page).to have_css '#account-setting'
           expect(page).to have_css '#sign-out'
           expect(page).not_to have_css '#users-index'
           expect(page).not_to have_css '#new-user'
@@ -84,11 +84,11 @@ RSpec.describe 'step4', type: :system do
           expect(page).not_to have_css '#sign-in'
         end
         it 'アカウント詳細画面' do
-          find('#my-account').click
+          find('#account-setting').click
           expect(page).to have_css '#edit-user'
         end
         it 'アカウント編集画面' do
-          find('#my-account').click
+          find('#account-setting').click
           find('#edit-user').click
           expect(page).to have_css '#update-user'
           expect(page).to have_css '#back'
@@ -103,7 +103,7 @@ RSpec.describe 'step4', type: :system do
           find('#create-session').click
         end
         it 'グローバルナビゲーション' do
-          expect(page).to have_css '#my-account'
+          expect(page).to have_css '#account-setting'
           expect(page).to have_css '#sign-out'
           expect(page).to have_css '#users-index'
           expect(page).to have_css '#new-user'
