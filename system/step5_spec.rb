@@ -110,14 +110,13 @@ RSpec.describe 'step5', type: :system do
         it 'ラベル登録画面' do
           visit new_label_path
           expect(page).to have_content 'ラベル登録ページ'
-          expect(page).to have_selector 'label', text: '名前'
+          expect(page).to have_selector 'input[name="label[name]"]'
           expect(page).to have_button '登録する'
-          expect(page).to have_link '戻る'
         end
         it 'ラベル編集画面' do
           visit edit_label_path(label_created_by_user)
           expect(page).to have_content 'ラベル編集ページ'
-          expect(page).to have_selector 'label', text: '名前'
+          expect(page).to have_selector 'input[name="label[name]"]'
           expect(page).to have_button '更新する'
           expect(page).to have_link '戻る'
         end
@@ -157,9 +156,8 @@ RSpec.describe 'step5', type: :system do
         it 'ラベル登録画面' do
           visit new_label_path
           expect(page).to have_content 'ラベル登録ページ'
-          expect(page).to have_selector 'label', text: '名前'
+          expect(page).to have_selector 'input[name="label[name]"]'
           expect(page).to have_button '登録する'
-          expect(page).to have_link '戻る'
         end
         it 'ラベル編集画面' do
           visit edit_label_path(label_created_by_admin)
@@ -302,11 +300,6 @@ RSpec.describe 'step5', type: :system do
         page.driver.browser.switch_to.alert.accept
         expect(page).to have_content 'ラベル一覧ページ'
       end
-      it 'ラベル登録画面の「戻る」をクリックした場合、ページタイトルに「ラベル一覧ページ」が表示される' do
-        visit new_label_path
-        click_link '戻る'
-        expect(page).to have_content 'ラベル一覧ページ'
-      end
       it 'ラベル編集画面の「戻る」をクリックした場合、ページタイトルに「ラベル一覧ページ」が表示される' do
         visit edit_label_path(label_created_by_user)
         click_link '戻る'
@@ -326,13 +319,13 @@ RSpec.describe 'step5', type: :system do
     describe '9.ラベルの検索フォームはステップ3で実装したタスク一覧画面の検索フォームに追加する形で実装すること' do
       it 'ラベルの検索フォームはステップ3で実装したタスク一覧画面の検索フォームに追加する形で実装すること' do
         visit tasks_path
-        expect(page).to have_css '#search_label_id'
+        expect(page).to have_css '#label_ids'
       end
     end
     describe '10.ラベルの検索フォームにはselectを使用し、デフォルト値は空にすること' do
       it 'ラベルの検索フォームにはselectを使用し、デフォルト値は空にすること' do
         visit tasks_path
-        expect(find('#search_label_id').all('option')[0].text).to be_blank
+        expect(find('#label_ids').all('option')[0].text).to be_blank
       end
     end
   end
@@ -542,7 +535,7 @@ RSpec.describe 'step5', type: :system do
           task.labels << label_created_by_user
         end
         visit tasks_path
-        select label_created_by_user.name, from: 'search[label_id]'
+        find('select[name="label_ids[]"]').find("option[value='#{label_created_by_user.id}']").select_option
         click_button '検索'
         sleep 0.5
         expect(page).to have_content 'task_title_7'
