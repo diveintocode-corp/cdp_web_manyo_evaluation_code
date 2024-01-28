@@ -227,16 +227,16 @@ RSpec.describe 'step5', type: :system do
         task_created_by_user.labels << Label.find(2,7,9)
         visit edit_task_path(task_created_by_user)
         sleep 0.5
-        expect(page).to have_checked_field('label_2')
-        expect(page).to have_checked_field('label_7')
-        expect(page).to have_checked_field('label_9')
-        expect(page).to have_unchecked_field('label_1')
-        expect(page).to have_unchecked_field('label_3')
-        expect(page).to have_unchecked_field('label_4')
-        expect(page).to have_unchecked_field('label_5')
-        expect(page).to have_unchecked_field('label_6')
-        expect(page).to have_unchecked_field('label_8')
-        expect(page).to have_unchecked_field('label_10')
+        expect(page).to have_checked_field('task_label_ids_2')
+        expect(page).to have_checked_field('task_label_ids_7')
+        expect(page).to have_checked_field('task_label_ids_9')
+        expect(page).to have_unchecked_field('task_label_ids_1')
+        expect(page).to have_unchecked_field('task_label_ids_3')
+        expect(page).to have_unchecked_field('task_label_ids_4')
+        expect(page).to have_unchecked_field('task_label_ids_5')
+        expect(page).to have_unchecked_field('task_label_ids_6')
+        expect(page).to have_unchecked_field('task_label_ids_8')
+        expect(page).to have_unchecked_field('task_label_ids_10')
       end
     end
     describe '7.タスク詳細画面に「ラベル」という項目を追加し、そのタスクに紐づいているラベル名をすべて表示させること' do
