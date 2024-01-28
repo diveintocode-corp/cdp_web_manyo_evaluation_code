@@ -424,20 +424,20 @@ RSpec.describe 'step5', type: :system do
           find('input[name="task[deadline_on]"]').set(Date.today)
           select '高', from: 'task[priority]'
           select '未着手', from: 'task[status]'
-          check 'task_label_ids_label_1'
-          check 'task_label_ids_label_3'
-          check 'task_label_ids_label_5'
-          check 'task_label_ids_label_7'
-          check 'task_label_ids_label_9'
+          check 'task_label_ids_1'
+          check 'task_label_ids_3'
+          check 'task_label_ids_5'
+          check 'task_label_ids_7'
+          check 'task_label_ids_9'
           click_button '登録する'
           sleep 0.5
           visit task_path(user.tasks.last)
           sleep 0.5
-          expect(page).to have_content 'task_label_ids_label_1'
-          expect(page).to have_content 'task_label_ids_label_3'
-          expect(page).to have_content 'task_label_ids_label_5'
-          expect(page).to have_content 'task_label_ids_label_7'
-          expect(page).to have_content 'task_label_ids_label_9'
+          expect(page).to have_content 'label_1'
+          expect(page).to have_content 'label_3'
+          expect(page).to have_content 'label_5'
+          expect(page).to have_content 'label_7'
+          expect(page).to have_content 'label_9'
         end
       end
       context 'タスク編集画面' do
@@ -458,11 +458,11 @@ RSpec.describe 'step5', type: :system do
           click_button '更新する'
           sleep 0.5
           visit task_path(task_created_by_user)
-          expect(page).to have_content 'task_label_ids_label_2'
-          expect(page).to have_content 'task_label_ids_label_4'
-          expect(page).to have_content 'task_label_ids_label_6'
-          expect(page).to have_content 'task_label_ids_label_8'
-          expect(page).to have_content 'task_label_ids_label_10'
+          expect(page).to have_content 'label_2'
+          expect(page).to have_content 'label_4'
+          expect(page).to have_content 'label_6'
+          expect(page).to have_content 'label_8'
+          expect(page).to have_content 'label_10'
         end
       end
     end
