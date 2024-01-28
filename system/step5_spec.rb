@@ -424,11 +424,12 @@ RSpec.describe 'step5', type: :system do
           find('input[name="task[deadline_on]"]').set(Date.today)
           select '高', from: 'task[priority]'
           select '未着手', from: 'task[status]'
-          check 'task_label_ids_1'
-          check 'task_label_ids_3'
-          check 'task_label_ids_5'
-          check 'task_label_ids_7'
-          check 'task_label_ids_9'
+
+          user.labels.each do |lb|
+            check "task_label_ids_#{lb.id}"
+            sleep 0.5
+          end
+
           click_button '登録する'
           sleep 0.5
           visit task_path(user.tasks.last)
@@ -447,11 +448,12 @@ RSpec.describe 'step5', type: :system do
           find('input[name="task[deadline_on]"]').set(Date.today)
           select '高', from: 'task[priority]'
           select '未着手', from: 'task[status]'
-          check 'task_label_ids_2'
-          check 'task_label_ids_4'
-          check 'task_label_ids_6'
-          check 'task_label_ids_8'
-          check 'task_label_ids_10'
+
+          user.labels.each do |lb|
+            check "task_label_ids_#{lb.id}"
+            sleep 0.5
+          end
+
           click_button '更新する'
           sleep 0.5
           visit task_path(task_created_by_user)
