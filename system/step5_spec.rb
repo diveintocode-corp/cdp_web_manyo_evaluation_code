@@ -14,10 +14,13 @@ RSpec.describe 'step5', type: :system do
       context '一般ユーザでログイン中の場合' do
         before do
           visit root_path
+          sleep 1
           click_link 'ログイン'
+          sleep 1
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
           click_button 'ログイン'
+          sleep 1
         end
         it '要件通りにパスのプレフィックスが使用できること' do
           visit labels_path
@@ -29,9 +32,11 @@ RSpec.describe 'step5', type: :system do
         before do
           visit root_path
           find('#sign-in').click
+          sleep 1
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
           find('#create-session').click
+          sleep 1
         end
         it '要件通りにパスのプレフィックスが使用できること' do
           visit labels_path
@@ -47,6 +52,7 @@ RSpec.describe 'step5', type: :system do
       context 'ログアウト中の場合' do
         it 'グローバルナビゲーション' do
           visit root_path
+          sleep 1
           expect(page).not_to have_css '#labels-index'
           expect(page).not_to have_css '#new-label'
         end
@@ -55,6 +61,7 @@ RSpec.describe 'step5', type: :system do
         before do
           visit root_path
           find('#sign-in').click
+          sleep 1
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
           find('#create-session').click
@@ -68,9 +75,11 @@ RSpec.describe 'step5', type: :system do
         before do
           visit root_path
           find('#sign-in').click
+          sleep 1
           find('input[name="session[email]"]').set(admin.email)
           find('input[name="session[password]"]').set(admin.password)
           find('#create-session').click
+          sleep 1
         end
         it 'グローバルナビゲーション' do
           expect(page).to have_css '#labels-index'
@@ -85,6 +94,7 @@ RSpec.describe 'step5', type: :system do
       context 'ログアウト中の場合' do
         it 'グローバルナビゲーション' do
           visit root_path
+          sleep 1
           expect(page).not_to have_link 'ラベル一覧'
           expect(page).not_to have_link 'ラベルを登録する'
         end
