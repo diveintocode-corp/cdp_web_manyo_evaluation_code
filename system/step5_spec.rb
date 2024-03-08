@@ -15,8 +15,6 @@ RSpec.describe 'step5', type: :system do
         before do
           visit root_path
           sleep 1
-          click_link 'ログイン'
-          sleep 1
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
           click_button 'ログイン'
