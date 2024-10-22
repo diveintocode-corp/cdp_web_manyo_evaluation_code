@@ -29,6 +29,7 @@ RSpec.describe 'step5', type: :system do
       context '管理者でログイン中の場合' do
         before do
           visit root_path
+          sleep 0.5
           find('#sign-in').click
           sleep 1
           find('input[name="session[email]"]').set(admin.email)
@@ -58,6 +59,7 @@ RSpec.describe 'step5', type: :system do
       context '一般ユーザでログイン中の場合' do
         before do
           visit root_path
+          sleep 0.5
           find('#sign-in').click
           sleep 1
           find('input[name="session[email]"]').set(user.email)
@@ -72,6 +74,7 @@ RSpec.describe 'step5', type: :system do
       context '管理者でログイン中の場合' do
         before do
           visit root_path
+          sleep 0.5
           find('#sign-in').click
           sleep 1
           find('input[name="session[email]"]').set(admin.email)
@@ -100,6 +103,7 @@ RSpec.describe 'step5', type: :system do
       context '一般ユーザでログイン中の場合' do
         before do
           visit new_session_path
+          sleep 0.5
           find('input[name="session[email]"]').set(user.email)
           find('input[name="session[password]"]').set(user.password)
           click_button 'ログイン'
@@ -112,6 +116,7 @@ RSpec.describe 'step5', type: :system do
 
         it 'ラベル一覧画面' do
           visit labels_path
+          sleep 0.5
           expect(page).to have_content '名前'
           expect(page).to have_content 'タスク数'
           expect(page).to have_link '編集'
@@ -119,12 +124,14 @@ RSpec.describe 'step5', type: :system do
         end
         it 'ラベル登録画面' do
           visit new_label_path
+          sleep 0.5
           expect(page).to have_content 'ラベル登録ページ'
           expect(page).to have_selector 'input[name="label[name]"]'
           expect(page).to have_button '登録する'
         end
         it 'ラベル編集画面' do
           visit edit_label_path(label_created_by_user)
+          sleep 0.5
           expect(page).to have_content 'ラベル編集ページ'
           expect(page).to have_selector 'input[name="label[name]"]'
           expect(page).to have_button '更新する'
@@ -132,6 +139,7 @@ RSpec.describe 'step5', type: :system do
         end
         it 'タスク登録画面' do
           visit new_task_path
+          sleep 0.5
           expect(page).to have_selector 'label', text: 'ラベル'
           expect(find('input[type="checkbox"]')).to be_visible
           expect(page).to have_button '登録する'
@@ -139,6 +147,7 @@ RSpec.describe 'step5', type: :system do
         end
         it 'タスク編集画面' do
           visit edit_task_path(task_created_by_user)
+          sleep 0.5
           expect(page).to have_selector 'label', text: 'ラベル'
           expect(find('input[type="checkbox"]')).to be_visible
           expect(page).to have_button '更新する'
@@ -198,6 +207,7 @@ RSpec.describe 'step5', type: :system do
           task.labels << label_created_by_user
         end
         visit labels_path
+        sleep 0.5
         expect(page).to have_content(3)
       end
     end
@@ -212,11 +222,13 @@ RSpec.describe 'step5', type: :system do
       end
       it 'タスク登録画面' do
         visit new_task_path
+        sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'
         expect(find('input[type="checkbox"]')).to be_visible
       end
       it 'タスク編集画面' do
         visit edit_task_path(task_created_by_user)
+        sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'
         expect(find('input[type="checkbox"]')).to be_visible
       end
